@@ -5,6 +5,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
 	<?php wp_head(); ?>
+    <style>
+        :root {
+            --color-primary: <?php echo esc_html( get_theme_mod( 'daisy_corp_primary_color', '#3b82f6' ) ); ?> !important;
+            --color-secondary: <?php echo esc_html( get_theme_mod( 'daisy_corp_secondary_color', '#64748b' ) ); ?> !important;
+        }
+    </style>
 </head>
 
 <body <?php body_class('bg-base-100 text-base-content min-h-screen flex flex-col'); ?>>

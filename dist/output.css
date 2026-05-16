@@ -26,6 +26,7 @@
     --default-font-family: var(--font-sans);
     --default-mono-font-family: var(--font-mono);
     --color-primary: oklch(0.6 0.15 250);
+    --color-secondary: oklch(0.7 0.1 200);
   }
 }
 @layer base {
@@ -2464,6 +2465,9 @@
   }
   .p-2 {
     padding: calc(var(--spacing) * 2);
+  }
+  .p-6 {
+    padding: calc(var(--spacing) * 6);
   }
   .p-10 {
     padding: calc(var(--spacing) * 10);

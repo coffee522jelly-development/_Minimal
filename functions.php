@@ -286,6 +286,51 @@ function daisy_corp_customize_register( $wp_customize ) {
             '4' => __( '4 Columns', 'daisy-corp' ),
         ),
     ) );
+
+    // Primary Color
+    $wp_customize->add_setting( 'daisy_corp_primary_color', array(
+        'default'   => '#3b82f6', // Default primary color
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'daisy_corp_primary_color', array(
+        'label'    => __( 'Primary Color', 'daisy-corp' ),
+        'section'  => 'daisy_corp_theme_settings',
+        'settings' => 'daisy_corp_primary_color',
+    ) ) );
+
+    // Secondary Color
+    $wp_customize->add_setting( 'daisy_corp_secondary_color', array(
+        'default'   => '#64748b', // Default secondary color
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'daisy_corp_secondary_color', array(
+        'label'    => __( 'Secondary Color', 'daisy-corp' ),
+        'section'  => 'daisy_corp_theme_settings',
+        'settings' => 'daisy_corp_secondary_color',
+    ) ) );
+
+    // Excerpt Length
+    $wp_customize->add_setting( 'daisy_corp_excerpt_length', array(
+        'default'   => '40',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'absint',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_excerpt_length', array(
+        'label'      => __( 'Excerpt Length (Words)', 'daisy-corp' ),
+        'section'    => 'daisy_corp_theme_settings',
+        'settings'   => 'daisy_corp_excerpt_length',
+        'type'       => 'number',
+        'input_attrs' => array(
+            'min'  => 10,
+            'max'  => 200,
+            'step' => 5,
+        ),
+    ) );
 }
 add_action( 'customize_register', 'daisy_corp_customize_register' );
 
@@ -312,6 +357,14 @@ function daisy_corp_sanitize_blog_columns( $input ) {
     }
     return '2';
 }
+
+/**
+ * Filter excerpt length
+ */
+function daisy_corp_custom_excerpt_length( $length ) {
+    return get_theme_mod( 'daisy_corp_excerpt_length', 40 );
+}
+add_filter( 'excerpt_length', 'daisy_corp_custom_excerpt_length', 999 );
 
 /**
  * Filter pagination links to add DaisyUI classes and ensure horizontal layout
