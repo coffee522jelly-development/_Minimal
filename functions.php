@@ -126,13 +126,16 @@ function daisy_corp_get_category_tree( $parent_id = 0, $depth = 1 ) {
     foreach ( $categories as $category ) {
         $children = daisy_corp_get_category_tree( $category->term_id, $depth + 1 );
         $output .= '<li>';
+        $count = $category->count;
+        $count_badge = '<span class="badge badge-sm badge-outline opacity-50">' . $count . '</span>';
+
         if ( ! empty( $children ) ) {
             $output .= '<details open>';
-            $output .= '<summary><a href="' . esc_url( get_category_link( $category->term_id ) ) . '">' . esc_html( $category->name ) . '</a></summary>';
+            $output .= '<summary><a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="flex justify-between w-full">' . esc_html( $category->name ) . ' ' . $count_badge . '</a></summary>';
             $output .= '<ul>' . $children . '</ul>';
             $output .= '</details>';
         } else {
-            $output .= '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '">' . esc_html( $category->name ) . '</a>';
+            $output .= '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="flex justify-between">' . esc_html( $category->name ) . ' ' . $count_badge . '</a>';
         }
         $output .= '</li>';
     }
@@ -379,6 +382,20 @@ function daisy_corp_customize_register( $wp_customize ) {
             'sunset' => 'Sunset',
         ),
     ) );
+
+    // Hide Sidebar on Single/Page
+    $wp_customize->add_setting( 'daisy_corp_hide_sidebar_single', array(
+        'default'   => false,
+        'transport' => 'refresh',
+        'sanitize_callback' => 'daisy_corp_sanitize_checkbox',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_hide_sidebar_single', array(
+        'label'    => __( 'Hide Sidebar on Single Posts & Pages', 'daisy-corp' ),
+        'section'  => 'daisy_corp_theme_settings',
+        'settings' => 'daisy_corp_hide_sidebar_single',
+        'type'     => 'checkbox',
+    ) );
 }
 add_action( 'customize_register', 'daisy_corp_customize_register' );
 
@@ -417,6 +434,10 @@ function daisy_corp_sanitize_daisyui_theme( $input ) {
         return $input;
     }
     return 'light';
+}
+
+function daisy_corp_sanitize_checkbox( $input ) {
+    return ( isset( $input ) && true === $input ) ? true : false;
 }
 
 /**
