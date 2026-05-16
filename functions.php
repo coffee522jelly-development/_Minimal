@@ -73,9 +73,29 @@ function daisy_corp_widgets_init() {
 	) );
 
     register_sidebar( array(
-		'name'          => esc_html__( 'Footer Widget Area', 'daisy-corp' ),
+		'name'          => esc_html__( 'Footer Column 1', 'daisy-corp' ),
 		'id'            => 'footer-1',
-		'description'   => esc_html__( 'Add widgets here for the footer.', 'daisy-corp' ),
+		'description'   => esc_html__( 'Add widgets here for the first footer column.', 'daisy-corp' ),
+		'before_widget' => '<nav>',
+		'after_widget'  => '</nav>',
+		'before_title'  => '<h6 class="footer-title">',
+		'after_title'   => '</h6>',
+	) );
+
+    register_sidebar( array(
+		'name'          => esc_html__( 'Footer Column 2', 'daisy-corp' ),
+		'id'            => 'footer-2',
+		'description'   => esc_html__( 'Add widgets here for the second footer column.', 'daisy-corp' ),
+		'before_widget' => '<nav>',
+		'after_widget'  => '</nav>',
+		'before_title'  => '<h6 class="footer-title">',
+		'after_title'   => '</h6>',
+	) );
+
+    register_sidebar( array(
+		'name'          => esc_html__( 'Footer Column 3', 'daisy-corp' ),
+		'id'            => 'footer-3',
+		'description'   => esc_html__( 'Add widgets here for the third footer column.', 'daisy-corp' ),
 		'before_widget' => '<nav>',
 		'after_widget'  => '</nav>',
 		'before_title'  => '<h6 class="footer-title">',
@@ -203,6 +223,42 @@ function daisy_corp_comment_form_submit_button( $submit_button ) {
     return str_replace( 'class="submit"', 'class="submit btn btn-primary"', $submit_button );
 }
 add_filter( 'comment_form_submit_button', 'daisy_corp_comment_form_submit_button' );
+
+/**
+ * Theme Customizer settings
+ */
+function daisy_corp_customize_register( $wp_customize ) {
+    $wp_customize->add_section( 'daisy_corp_theme_settings', array(
+        'title'    => __( 'Theme Settings', 'daisy-corp' ),
+        'priority' => 30,
+    ) );
+
+    $wp_customize->add_setting( 'daisy_corp_menu_position', array(
+        'default'   => 'center',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'daisy_corp_sanitize_menu_position',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_menu_position', array(
+        'label'      => __( 'Menu Position', 'daisy-corp' ),
+        'section'    => 'daisy_corp_theme_settings',
+        'settings'   => 'daisy_corp_menu_position',
+        'type'       => 'radio',
+        'choices'    => array(
+            'center' => __( 'Center', 'daisy-corp' ),
+            'right'  => __( 'Right', 'daisy-corp' ),
+        ),
+    ) );
+}
+add_action( 'customize_register', 'daisy_corp_customize_register' );
+
+function daisy_corp_sanitize_menu_position( $input ) {
+    $valid = array( 'center', 'right' );
+    if ( in_array( $input, $valid ) ) {
+        return $input;
+    }
+    return 'center';
+}
 
 /**
  * Filter pagination links to add DaisyUI classes and ensure horizontal layout
