@@ -4,11 +4,57 @@
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="profile" href="https://gmpg.org/xfn/11">
+    <?php
+    $selected_font = get_theme_mod( 'daisy_corp_web_font', 'sans-serif' );
+    $font_stack = '';
+    $google_font_url = '';
+
+    switch ( $selected_font ) {
+        case 'inter':
+            $google_font_url = 'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap';
+            $font_stack = '"Inter", sans-serif';
+            break;
+        case 'noto-sans':
+            $google_font_url = 'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap';
+            $font_stack = '"Noto Sans JP", sans-serif';
+            break;
+        case 'noto-serif':
+            $google_font_url = 'https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&display=swap';
+            $font_stack = '"Noto Serif JP", serif';
+            break;
+        case 'roboto':
+            $google_font_url = 'https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap';
+            $font_stack = '"Roboto", sans-serif';
+            break;
+        case 'merriweather':
+            $google_font_url = 'https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap';
+            $font_stack = '"Merriweather", serif';
+            break;
+        case 'oswald':
+            $google_font_url = 'https://fonts.googleapis.com/css2?family=Oswald:wght@400;700&display=swap';
+            $font_stack = '"Oswald", sans-serif';
+            break;
+        default:
+            $font_stack = 'system-ui, -apple-system, sans-serif';
+    }
+
+    if ( ! empty( $google_font_url ) ) {
+        echo '<link rel="preconnect" href="https://fonts.googleapis.com">' . "\n";
+        echo '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>' . "\n";
+        echo '<link href="' . esc_url( $google_font_url ) . '" rel="stylesheet">' . "\n";
+    }
+    ?>
 	<?php wp_head(); ?>
     <style>
         :root {
             --color-primary: <?php echo esc_html( get_theme_mod( 'daisy_corp_primary_color', '#3b82f6' ) ); ?> !important;
             --color-secondary: <?php echo esc_html( get_theme_mod( 'daisy_corp_secondary_color', '#64748b' ) ); ?> !important;
+            font-size: <?php echo esc_html( get_theme_mod( 'daisy_corp_base_font_size', '16' ) ); ?>px !important;
+        }
+        body {
+            <?php if ( ! empty( $font_stack ) ) : ?>
+            font-family: <?php echo $font_stack; ?> !important;
+            <?php endif; ?>
         }
     </style>
 </head>

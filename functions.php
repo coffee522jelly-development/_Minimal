@@ -131,11 +131,11 @@ function daisy_corp_get_category_tree( $parent_id = 0, $depth = 1 ) {
 
         if ( ! empty( $children ) ) {
             $output .= '<details open>';
-            $output .= '<summary><a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="flex justify-between w-full">' . esc_html( $category->name ) . ' ' . $count_badge . '</a></summary>';
+            $output .= '<summary><a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="flex justify-between items-center w-full gap-4">' . esc_html( $category->name ) . ' ' . $count_badge . '</a></summary>';
             $output .= '<ul>' . $children . '</ul>';
             $output .= '</details>';
         } else {
-            $output .= '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="flex justify-between">' . esc_html( $category->name ) . ' ' . $count_badge . '</a>';
+            $output .= '<a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="flex justify-between items-center gap-4">' . esc_html( $category->name ) . ' ' . $count_badge . '</a>';
         }
         $output .= '</li>';
     }
@@ -396,6 +396,48 @@ function daisy_corp_customize_register( $wp_customize ) {
         'settings' => 'daisy_corp_hide_sidebar_single',
         'type'     => 'checkbox',
     ) );
+
+    // Base Font Size
+    $wp_customize->add_setting( 'daisy_corp_base_font_size', array(
+        'default'   => '16',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'absint',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_base_font_size', array(
+        'label'      => __( 'Base Font Size (px)', 'daisy-corp' ),
+        'section'    => 'daisy_corp_theme_settings',
+        'settings'   => 'daisy_corp_base_font_size',
+        'type'       => 'number',
+        'input_attrs' => array(
+            'min'  => 12,
+            'max'  => 24,
+            'step' => 1,
+        ),
+    ) );
+
+    // Web Font
+    $wp_customize->add_setting( 'daisy_corp_web_font', array(
+        'default'   => 'sans-serif',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'daisy_corp_sanitize_web_font',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_web_font', array(
+        'label'    => __( 'Theme Font Family', 'daisy-corp' ),
+        'section'  => 'daisy_corp_theme_settings',
+        'settings' => 'daisy_corp_web_font',
+        'type'     => 'select',
+        'choices'  => array(
+            'sans-serif' => 'System Sans-Serif',
+            'inter'      => 'Inter (Sans-Serif)',
+            'noto-sans'  => 'Noto Sans JP (Japanese Sans-Serif)',
+            'noto-serif' => 'Noto Serif JP (Japanese Serif)',
+            'roboto'     => 'Roboto',
+            'merriweather' => 'Merriweather (Serif)',
+            'oswald'     => 'Oswald (Display)',
+        ),
+    ) );
 }
 add_action( 'customize_register', 'daisy_corp_customize_register' );
 
@@ -438,6 +480,14 @@ function daisy_corp_sanitize_daisyui_theme( $input ) {
 
 function daisy_corp_sanitize_checkbox( $input ) {
     return ( isset( $input ) && true === $input ) ? true : false;
+}
+
+function daisy_corp_sanitize_web_font( $input ) {
+    $valid = array( 'sans-serif', 'inter', 'noto-sans', 'noto-serif', 'roboto', 'merriweather', 'oswald' );
+    if ( in_array( $input, $valid ) ) {
+        return $input;
+    }
+    return 'sans-serif';
 }
 
 /**
