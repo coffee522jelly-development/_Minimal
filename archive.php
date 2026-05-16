@@ -38,17 +38,7 @@
                 <?php endwhile; ?>
             </div>
 
-            <div class="mt-12 join flex justify-center">
-                <?php
-                echo paginate_links( array(
-                    'type'      => 'list',
-                    'prev_text' => '<button class="join-item btn">«</button>',
-                    'next_text' => '<button class="join-item btn">»</button>',
-                    'before_page_number' => '<span class="join-item btn">',
-                    'after_page_number'  => '</span>',
-                ) );
-                ?>
-            </div>
+            <?php daisy_corp_pagination(); ?>
 
         <?php else : ?>
             <div class="alert">

@@ -22,21 +22,26 @@
           'menu_id'        => 'primary-menu-mobile',
           'container'      => false,
           'items_wrap'     => '<ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">%3$s</ul>',
+          'fallback_cb'    => false,
         ) );
       ?>
     </div>
     <a href="<?php echo esc_url( home_url( '/' ) ); ?>" class="btn btn-ghost text-xl font-bold tracking-tight"><?php bloginfo( 'name' ); ?></a>
   </div>
+
   <div class="navbar-center hidden lg:flex">
     <?php
       wp_nav_menu( array(
         'theme_location' => 'menu-1',
         'menu_id'        => 'primary-menu-desktop',
         'container'      => false,
-        'items_wrap'     => '<ul class="menu menu-horizontal px-1 gap-2 font-medium">%3$s</ul>',
+        'items_wrap'     => '<ul class="menu menu-horizontal px-1 font-medium gap-1">%3$s</ul>',
+        'fallback_cb'    => false,
+        'walker'         => new Daisy_Corp_Walker_Nav_Menu(),
       ) );
     ?>
   </div>
+
   <div class="navbar-end">
     <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary btn-sm">Contact</a>
   </div>

@@ -20,6 +20,39 @@ if ( ! function_exists( 'daisy_corp_setup' ) ) :
 		) );
 	}
 endif;
+
+/**
+ * Custom Nav Walker for DaisyUI Dropdowns
+ */
+class Daisy_Corp_Walker_Nav_Menu extends Walker_Nav_Menu {
+    function start_lvl( &$output, $depth = 0, $args = null ) {
+        $output .= '<ul class="p-2 bg-base-100 rounded-t-none shadow-lg z-[1]">';
+    }
+
+    function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
+        $classes = empty( $item->classes ) ? array() : (array) $item->classes;
+        $has_children = in_array( 'menu-item-has-children', $classes );
+
+        $output .= '<li>';
+
+        if ( $has_children && $depth === 0 ) {
+            $output .= '<details>';
+            $output .= '<summary>' . esc_html( $item->title ) . '</summary>';
+        } else {
+            $output .= '<a href="' . esc_url( $item->url ) . '">' . esc_html( $item->title ) . '</a>';
+        }
+    }
+
+    function end_el( &$output, $item, $depth = 0, $args = null ) {
+        $classes = empty( $item->classes ) ? array() : (array) $item->classes;
+        $has_children = in_array( 'menu-item-has-children', $classes );
+
+        if ( $has_children && $depth === 0 ) {
+            $output .= '</details>';
+        }
+        $output .= '</li>';
+    }
+}
 add_action( 'after_setup_theme', 'daisy_corp_setup' );
 
 function daisy_corp_scripts() {
@@ -53,8 +86,13 @@ add_action( 'widgets_init', 'daisy_corp_widgets_init' );
 
 /**
  * Recursive function to build category tree with DaisyUI menu classes
+ * Specifically limited to 3 levels of depth.
  */
-function daisy_corp_get_category_tree( $parent_id = 0 ) {
+function daisy_corp_get_category_tree( $parent_id = 0, $depth = 1 ) {
+    if ( $depth > 3 ) {
+        return '';
+    }
+
     $categories = get_categories( array(
         'parent' => $parent_id,
         'hide_empty' => false,
@@ -66,7 +104,7 @@ function daisy_corp_get_category_tree( $parent_id = 0 ) {
 
     $output = '';
     foreach ( $categories as $category ) {
-        $children = daisy_corp_get_category_tree( $category->term_id );
+        $children = daisy_corp_get_category_tree( $category->term_id, $depth + 1 );
         $output .= '<li>';
         if ( ! empty( $children ) ) {
             $output .= '<details open>';
@@ -81,6 +119,56 @@ function daisy_corp_get_category_tree( $parent_id = 0 ) {
 
     return $output;
 }
+
+/**
+ * Category Tree Widget Class
+ */
+class Daisy_Corp_Category_Tree_Widget extends WP_Widget {
+    public function __construct() {
+        parent::__construct(
+            'daisy_corp_category_tree',
+            __( 'Daisy Corp Category Tree', 'daisy-corp' ),
+            array( 'description' => __( 'Displays a 3-level hierarchical category tree.', 'daisy-corp' ) )
+        );
+    }
+
+    public function widget( $args, $instance ) {
+        echo $args['before_widget'];
+        if ( ! empty( $instance['title'] ) ) {
+            echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
+        }
+
+        $tree = daisy_corp_get_category_tree();
+        if ( ! empty( $tree ) ) {
+            echo '<ul class="menu bg-base-200 w-full rounded-box">' . $tree . '</ul>';
+        } else {
+            echo '<p>' . esc_html__( 'No categories found.', 'daisy-corp' ) . '</p>';
+        }
+
+        echo $args['after_widget'];
+    }
+
+    public function form( $instance ) {
+        $title = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Categories', 'daisy-corp' );
+        ?>
+        <p>
+            <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
+            <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
+        </p>
+        <?php
+    }
+
+    public function update( $new_instance, $old_instance ) {
+        $instance = array();
+        $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+        return $instance;
+    }
+}
+
+function daisy_corp_register_widgets() {
+    register_widget( 'Daisy_Corp_Category_Tree_Widget' );
+}
+add_action( 'widgets_init', 'daisy_corp_register_widgets' );
 
 /**
  * Category Tree Shortcode
@@ -115,3 +203,26 @@ function daisy_corp_comment_form_submit_button( $submit_button ) {
     return str_replace( 'class="submit"', 'class="submit btn btn-primary"', $submit_button );
 }
 add_filter( 'comment_form_submit_button', 'daisy_corp_comment_form_submit_button' );
+
+/**
+ * Filter pagination links to add DaisyUI classes and ensure horizontal layout
+ */
+function daisy_corp_pagination() {
+    $links = paginate_links( array(
+        'type'      => 'array',
+        'prev_text' => '&laquo;',
+        'next_text' => '&raquo;',
+    ) );
+
+    if ( is_array( $links ) ) {
+        echo '<div class="join flex justify-center mt-12">';
+        foreach ( $links as $link ) {
+            if ( strpos( $link, 'current' ) !== false ) {
+                echo str_replace( 'page-numbers current', 'join-item btn btn-active', $link );
+            } else {
+                echo str_replace( 'page-numbers', 'join-item btn', $link );
+            }
+        }
+        echo '</div>';
+    }
+}

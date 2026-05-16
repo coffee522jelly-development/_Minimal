@@ -2,8 +2,26 @@
 @plugin "@tailwindcss/typography";
 @plugin "daisyui";
 
-/* Custom corporate colors or overrides can go here */
+/* Custom corporate colors or overrides */
 @theme {
   --color-primary: oklch(0.6 0.15 250);
   --color-secondary: oklch(0.7 0.1 200);
+}
+
+/* Ensure horizontal menu items stay aligned and handle DaisyUI specifics */
+.menu-horizontal > li {
+  @apply flex items-center;
+}
+
+/* Fix for details in horizontal menu */
+.menu-horizontal details > summary {
+  @apply py-2 px-4;
+}
+
+.menu-horizontal details {
+  @apply relative;
+}
+
+.menu-horizontal details > ul {
+  @apply absolute left-0 top-full mt-0 min-w-max;
 }
