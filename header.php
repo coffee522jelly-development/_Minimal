@@ -1,5 +1,5 @@
 <!doctype html>
-<html <?php language_attributes(); ?> data-theme="light">
+<html <?php language_attributes(); ?> data-theme="<?php echo esc_attr( get_theme_mod( 'daisy_corp_daisyui_theme', 'light' ) ); ?>">
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">

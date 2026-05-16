@@ -331,6 +331,54 @@ function daisy_corp_customize_register( $wp_customize ) {
             'step' => 5,
         ),
     ) );
+
+    // DaisyUI Theme Selector
+    $wp_customize->add_setting( 'daisy_corp_daisyui_theme', array(
+        'default'   => 'light',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'daisy_corp_sanitize_daisyui_theme',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_daisyui_theme', array(
+        'label'    => __( 'DaisyUI Theme', 'daisy-corp' ),
+        'section'  => 'daisy_corp_theme_settings',
+        'settings' => 'daisy_corp_daisyui_theme',
+        'type'     => 'select',
+        'choices'  => array(
+            'light' => 'Light',
+            'dark' => 'Dark',
+            'cupcake' => 'Cupcake',
+            'bumblebee' => 'Bumblebee',
+            'emerald' => 'Emerald',
+            'corporate' => 'Corporate',
+            'synthwave' => 'Synthwave',
+            'retro' => 'Retro',
+            'cyberpunk' => 'Cyberpunk',
+            'valentine' => 'Valentine',
+            'halloween' => 'Halloween',
+            'garden' => 'Garden',
+            'forest' => 'Forest',
+            'aqua' => 'Aqua',
+            'lofi' => 'Lo-fi',
+            'pastel' => 'Pastel',
+            'fantasy' => 'Fantasy',
+            'wireframe' => 'Wireframe',
+            'black' => 'Black',
+            'luxury' => 'Luxury',
+            'dracula' => 'Dracula',
+            'cmyk' => 'CMYK',
+            'autumn' => 'Autumn',
+            'business' => 'Business',
+            'acid' => 'Acid',
+            'lemonade' => 'Lemonade',
+            'night' => 'Night',
+            'coffee' => 'Coffee',
+            'winter' => 'Winter',
+            'dim' => 'Dim',
+            'nord' => 'Nord',
+            'sunset' => 'Sunset',
+        ),
+    ) );
 }
 add_action( 'customize_register', 'daisy_corp_customize_register' );
 
@@ -356,6 +404,19 @@ function daisy_corp_sanitize_blog_columns( $input ) {
         return $input;
     }
     return '2';
+}
+
+function daisy_corp_sanitize_daisyui_theme( $input ) {
+    $valid = array(
+        'light', 'dark', 'cupcake', 'bumblebee', 'emerald', 'corporate', 'synthwave', 'retro',
+        'cyberpunk', 'valentine', 'halloween', 'garden', 'forest', 'aqua', 'lofi', 'pastel',
+        'fantasy', 'wireframe', 'black', 'luxury', 'dracula', 'cmyk', 'autumn', 'business',
+        'acid', 'lemonade', 'night', 'coffee', 'winter', 'dim', 'nord', 'sunset'
+    );
+    if ( in_array( $input, $valid ) ) {
+        return $input;
+    }
+    return 'light';
 }
 
 /**
