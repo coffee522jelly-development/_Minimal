@@ -249,6 +249,43 @@ function daisy_corp_customize_register( $wp_customize ) {
             'right'  => __( 'Right', 'daisy-corp' ),
         ),
     ) );
+
+    // Sidebar Position
+    $wp_customize->add_setting( 'daisy_corp_sidebar_position', array(
+        'default'   => 'right',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'daisy_corp_sanitize_sidebar_position',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_sidebar_position', array(
+        'label'      => __( 'Sidebar Position', 'daisy-corp' ),
+        'section'    => 'daisy_corp_theme_settings',
+        'settings'   => 'daisy_corp_sidebar_position',
+        'type'       => 'radio',
+        'choices'    => array(
+            'left'  => __( 'Left', 'daisy-corp' ),
+            'right' => __( 'Right', 'daisy-corp' ),
+        ),
+    ) );
+
+    // Blog Columns
+    $wp_customize->add_setting( 'daisy_corp_blog_columns', array(
+        'default'   => '2',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'daisy_corp_sanitize_blog_columns',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_blog_columns', array(
+        'label'      => __( 'Blog Grid Columns', 'daisy-corp' ),
+        'section'    => 'daisy_corp_theme_settings',
+        'settings'   => 'daisy_corp_blog_columns',
+        'type'       => 'select',
+        'choices'    => array(
+            '1' => __( '1 Column', 'daisy-corp' ),
+            '2' => __( '2 Columns', 'daisy-corp' ),
+            '4' => __( '4 Columns', 'daisy-corp' ),
+        ),
+    ) );
 }
 add_action( 'customize_register', 'daisy_corp_customize_register' );
 
@@ -258,6 +295,22 @@ function daisy_corp_sanitize_menu_position( $input ) {
         return $input;
     }
     return 'center';
+}
+
+function daisy_corp_sanitize_sidebar_position( $input ) {
+    $valid = array( 'left', 'right' );
+    if ( in_array( $input, $valid ) ) {
+        return $input;
+    }
+    return 'right';
+}
+
+function daisy_corp_sanitize_blog_columns( $input ) {
+    $valid = array( '1', '2', '4' );
+    if ( in_array( $input, $valid ) ) {
+        return $input;
+    }
+    return '2';
 }
 
 /**

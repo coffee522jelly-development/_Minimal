@@ -1,7 +1,22 @@
 <?php get_header(); ?>
 
+<?php
+$sidebar_pos = get_theme_mod( 'daisy_corp_sidebar_position', 'right' );
+$blog_cols = get_theme_mod( 'daisy_corp_blog_columns', '2' );
+
+$grid_cols_class = 'grid-cols-1';
+if ( '2' === $blog_cols ) {
+    $grid_cols_class = 'grid-cols-1 md:grid-cols-2';
+} elseif ( '4' === $blog_cols ) {
+    $grid_cols_class = 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4';
+}
+
+$main_order = ( 'left' === $sidebar_pos ) ? 'order-2' : 'order-1';
+$sidebar_order = ( 'left' === $sidebar_pos ) ? 'order-1' : 'order-2';
+?>
+
 <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
-    <div class="lg:col-span-3">
+    <div class="lg:col-span-3 <?php echo esc_attr( $main_order ); ?>">
         <header class="mb-12 border-b border-base-200 pb-8">
             <?php
             the_archive_title( '<h1 class="text-4xl font-extrabold mb-4">', '</h1>' );
@@ -10,7 +25,7 @@
         </header>
 
         <?php if ( have_posts() ) : ?>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid <?php echo esc_attr( $grid_cols_class ); ?> gap-6">
                 <?php while ( have_posts() ) : the_post(); ?>
                     <article id="post-<?php the_ID(); ?>" <?php post_class('card bg-base-100 shadow-sm border border-base-200'); ?>>
                         <?php if ( has_post_thumbnail() ) : ?>
@@ -48,7 +63,7 @@
         <?php endif; ?>
     </div>
 
-    <aside class="lg:col-span-1">
+    <aside class="lg:col-span-1 <?php echo esc_attr( $sidebar_order ); ?>">
         <?php get_sidebar(); ?>
     </aside>
 </div>
