@@ -1,0 +1,8 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Custom corporate colors or overrides can go here */
+@theme {
+  --color-primary: oklch(0.6 0.15 250);
+  --color-secondary: oklch(0.7 0.1 200);
+}
