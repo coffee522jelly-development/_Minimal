@@ -22,7 +22,12 @@
 
 <?php wp_footer(); ?>
 <script>
-  feather.replace();
+  <?php $base_font_size = get_theme_mod( 'daisy_corp_base_font_size', '16' ); ?>
+  feather.replace({
+    width: <?php echo esc_js( $base_font_size ); ?>,
+    height: <?php echo esc_js( $base_font_size ); ?>,
+    'stroke-width': 2
+  });
 </script>
 </body>
 </html>

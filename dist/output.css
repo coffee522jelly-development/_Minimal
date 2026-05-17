@@ -2455,9 +2455,6 @@
   .h-48 {
     height: calc(var(--spacing) * 48);
   }
-  .h-\[1em\] {
-    height: 1em;
-  }
   .h-auto {
     height: auto;
   }
@@ -2475,9 +2472,6 @@
   }
   .w-52 {
     width: calc(var(--spacing) * 52);
-  }
-  .w-\[1em\] {
-    width: 1em;
   }
   .w-full {
     width: 100%;

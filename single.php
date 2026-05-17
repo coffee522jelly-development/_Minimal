@@ -20,7 +20,7 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
                         <h1 class="text-4xl font-extrabold mb-4 leading-tight"><?php the_title(); ?></h1>
                         <div class="flex items-center gap-4 text-xs opacity-50">
                             <span class="flex items-center gap-1">
-                                <i data-feather="calendar" class="w-[1em] h-[1em]"></i>
+                                <i data-feather="calendar"></i>
                                 <?php echo get_the_date(); ?>
                             </span>
                             <span><?php the_category(', '); ?></span>
@@ -39,7 +39,7 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
 
                     <footer class="mt-16 pt-10 border-t border-base-200">
                         <div class="flex flex-wrap gap-2 items-center">
-                            <i data-feather="tag" class="w-[1em] h-[1em] opacity-30 mr-1"></i>
+                            <i data-feather="tag" class="opacity-30 mr-1"></i>
                             <?php the_tags('<span class="badge badge-sm badge-outline opacity-70">', '</span> <span class="badge badge-sm badge-outline opacity-70">', '</span>'); ?>
                         </div>
 

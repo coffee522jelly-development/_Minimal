@@ -40,7 +40,7 @@ $sidebar_order = ( 'left' === $sidebar_pos ) ? 'order-1' : 'order-2';
                                 </a>
                             </h2>
                             <div class="text-xs opacity-50 mb-4 flex items-center gap-1">
-                                <i data-feather="calendar" class="w-[1em] h-[1em]"></i>
+                                <i data-feather="calendar"></i>
                                 <?php echo get_the_date(); ?>
                             </div>
                             <div class="prose prose-sm max-w-none">
