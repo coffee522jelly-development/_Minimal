@@ -45,6 +45,7 @@
     }
     ?>
 	<?php wp_head(); ?>
+    <script src="https://unpkg.com/feather-icons"></script>
     <style>
         :root {
             --color-primary: <?php echo esc_html( get_theme_mod( 'daisy_corp_primary_color', '#3b82f6' ) ); ?> !important;

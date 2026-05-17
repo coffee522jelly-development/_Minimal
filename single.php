@@ -18,8 +18,11 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16'; // Increased gap
                 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                     <header class="mb-10">
                         <h1 class="text-4xl font-extrabold mb-4 leading-tight"><?php the_title(); ?></h1>
-                        <div class="flex items-center gap-4 text-sm opacity-60">
-                            <span><?php echo get_the_date(); ?></span>
+                        <div class="flex items-center gap-4 text-xs opacity-50">
+                            <span class="flex items-center gap-1">
+                                <i data-feather="calendar" class="w-3 h-3"></i>
+                                <?php echo get_the_date(); ?>
+                            </span>
                             <span><?php the_category(', '); ?></span>
                         </div>
                     </header>
@@ -35,8 +38,21 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16'; // Increased gap
                     </div>
 
                     <footer class="mt-16 pt-10 border-t border-base-200">
-                        <div class="flex flex-wrap gap-2">
-                            <?php the_tags('<span class="badge badge-outline">', '</span> <span class="badge badge-outline">', '</span>'); ?>
+                        <div class="flex flex-wrap gap-2 items-center">
+                            <i data-feather="tag" class="w-3 h-3 opacity-30 mr-1"></i>
+                            <?php the_tags('<span class="badge badge-sm badge-outline opacity-70">', '</span> <span class="badge badge-sm badge-outline opacity-70">', '</span>'); ?>
+                        </div>
+
+                        <div class="mt-8 flex items-center gap-4 opacity-60">
+                            <div class="avatar">
+                                <div class="w-10 rounded-full">
+                                    <?php echo get_avatar( get_the_author_meta( 'ID' ), 40 ); ?>
+                                </div>
+                            </div>
+                            <div class="text-xs">
+                                <div class="font-bold opacity-80"><?php the_author(); ?></div>
+                                <div class="opacity-70"><?php the_author_meta( 'description' ); ?></div>
+                            </div>
                         </div>
                     </footer>
 
