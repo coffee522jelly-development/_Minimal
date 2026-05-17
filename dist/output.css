@@ -2220,9 +2220,6 @@
   .mt-16 {
     margin-top: calc(var(--spacing) * 16);
   }
-  .mr-1 {
-    margin-right: calc(var(--spacing) * 1);
-  }
   .mr-4 {
     margin-right: calc(var(--spacing) * 4);
   }
@@ -2679,9 +2676,6 @@
     & :where(a.btn:not(.btn-link)):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
       text-decoration-line: none;
     }
-  }
-  .opacity-30 {
-    opacity: 30%;
   }
   .opacity-50 {
     opacity: 50%;

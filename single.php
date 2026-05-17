@@ -23,7 +23,17 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
                                 <i data-feather="calendar"></i>
                                 <?php echo get_the_date(); ?>
                             </span>
-                            <span><?php the_category(', '); ?></span>
+                            <span class="flex items-center gap-2">
+                                <?php
+                                $categories = get_the_category();
+                                if ( ! empty( $categories ) ) {
+                                    foreach ( $categories as $index => $category ) {
+                                        if ( $index > 0 ) echo ', ';
+                                        echo '<span class="flex items-center gap-1"><i data-feather="tag"></i><a href="' . esc_url( get_category_link( $category->term_id ) ) . '">' . esc_html( $category->name ) . '</a></span>';
+                                    }
+                                }
+                                ?>
+                            </span>
                         </div>
                     </header>
 
@@ -39,7 +49,6 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
 
                     <footer class="mt-16 pt-10 border-t border-base-200">
                         <div class="flex flex-wrap gap-2 items-center">
-                            <i data-feather="tag" class="opacity-30 mr-1"></i>
                             <?php the_tags('<span class="badge badge-sm badge-outline opacity-70">', '</span> <span class="badge badge-sm badge-outline opacity-70">', '</span>'); ?>
                         </div>
 
