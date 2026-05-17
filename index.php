@@ -40,7 +40,7 @@ $sidebar_order = ( 'left' === $sidebar_pos ) ? 'order-1' : 'order-2';
                                 <?php the_excerpt(); ?>
                             </div>
                             <div class="card-actions justify-end mt-4">
-                                <a href="<?php the_permalink(); ?>" class="btn btn-ghost btn-sm">
+                                <a href="<?php the_permalink(); ?>" class="btn btn-secondary btn-sm">
                                     <?php echo esc_html( get_theme_mod( 'daisy_corp_read_more_text', __( 'Read More', 'daisy-corp' ) ) ); ?>
                                 </a>
                             </div>
