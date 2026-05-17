@@ -411,6 +411,34 @@ function daisy_corp_customize_register( $wp_customize ) {
         'type'     => 'text',
     ) );
 
+    // Contact URL
+    $wp_customize->add_setting( 'daisy_corp_contact_url', array(
+        'default'   => '/contact',
+        'transport' => 'refresh',
+        'sanitize_callback' => 'esc_url_raw',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_contact_url', array(
+        'label'    => __( 'Contact Button URL', 'daisy-corp' ),
+        'section'  => 'daisy_corp_theme_settings',
+        'settings' => 'daisy_corp_contact_url',
+        'type'     => 'text',
+    ) );
+
+    // Contact Text
+    $wp_customize->add_setting( 'daisy_corp_contact_text', array(
+        'default'   => __( 'Contact', 'daisy-corp' ),
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_contact_text', array(
+        'label'    => __( 'Contact Button Text', 'daisy-corp' ),
+        'section'  => 'daisy_corp_theme_settings',
+        'settings' => 'daisy_corp_contact_text',
+        'type'     => 'text',
+    ) );
+
     // Base Font Size
     $wp_customize->add_setting( 'daisy_corp_base_font_size', array(
         'default'   => '16',

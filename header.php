@@ -116,7 +116,9 @@
       ?>
     </div>
     <?php endif; ?>
-    <a href="<?php echo esc_url( home_url( '/contact' ) ); ?>" class="btn btn-primary btn-sm">Contact</a>
+    <a href="<?php echo esc_url( get_theme_mod( 'daisy_corp_contact_url', '/contact' ) ); ?>" class="btn btn-primary btn-sm">
+        <?php echo esc_html( get_theme_mod( 'daisy_corp_contact_text', 'Contact' ) ); ?>
+    </a>
   </div>
 </header>
 
