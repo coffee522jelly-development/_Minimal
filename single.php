@@ -8,19 +8,19 @@ $main_order = ( 'left' === $sidebar_pos ) ? 'order-2' : 'order-1';
 $sidebar_order = ( 'left' === $sidebar_pos ) ? 'order-1' : 'order-2';
 
 $main_cols_class = $hide_sidebar ? 'lg:col-span-4' : 'lg:col-span-3';
-$grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16'; // Increased gap
+$grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
 ?>
 
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-8 <?php echo esc_attr( $grid_gap_class ); ?>">
-    <div class="<?php echo esc_attr( $main_cols_class ); ?> <?php echo esc_attr( $main_order ); ?>">
-        <div class="max-w-4xl mx-auto px-4 lg:px-8"> <!-- Increased max-width slightly but added more padding -->
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-8 <?php echo esc_attr( $grid_gap_class ); ?> items-start">
+    <div class="<?php echo esc_attr( $main_cols_class ); ?> <?php echo esc_attr( $main_order ); ?> w-full">
+        <div class="max-w-4xl mx-auto px-4 lg:px-8">
             <?php while ( have_posts() ) : the_post(); ?>
                 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                     <header class="mb-10">
                         <h1 class="text-4xl font-extrabold mb-4 leading-tight"><?php the_title(); ?></h1>
                         <div class="flex items-center gap-4 text-xs opacity-50">
                             <span class="flex items-center gap-1">
-                                <i data-feather="calendar" class="w-3 h-3"></i>
+                                <i data-feather="calendar" class="w-[1em] h-[1em]"></i>
                                 <?php echo get_the_date(); ?>
                             </span>
                             <span><?php the_category(', '); ?></span>
@@ -39,7 +39,7 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16'; // Increased gap
 
                     <footer class="mt-16 pt-10 border-t border-base-200">
                         <div class="flex flex-wrap gap-2 items-center">
-                            <i data-feather="tag" class="w-3 h-3 opacity-30 mr-1"></i>
+                            <i data-feather="tag" class="w-[1em] h-[1em] opacity-30 mr-1"></i>
                             <?php the_tags('<span class="badge badge-sm badge-outline opacity-70">', '</span> <span class="badge badge-sm badge-outline opacity-70">', '</span>'); ?>
                         </div>
 
@@ -69,7 +69,7 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16'; // Increased gap
     </div>
 
     <?php if ( ! $hide_sidebar ) : ?>
-    <aside class="lg:col-span-1 <?php echo esc_attr( $sidebar_order ); ?>">
+    <aside class="lg:col-span-1 <?php echo esc_attr( $sidebar_order ); ?> w-full">
         <?php get_sidebar(); ?>
     </aside>
     <?php endif; ?>

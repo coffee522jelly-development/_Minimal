@@ -397,6 +397,20 @@ function daisy_corp_customize_register( $wp_customize ) {
         'type'     => 'checkbox',
     ) );
 
+    // Read More Text
+    $wp_customize->add_setting( 'daisy_corp_read_more_text', array(
+        'default'   => __( 'Read More', 'daisy-corp' ),
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_text_field',
+    ) );
+
+    $wp_customize->add_control( 'daisy_corp_read_more_text', array(
+        'label'    => __( 'Read More Button Text', 'daisy-corp' ),
+        'section'  => 'daisy_corp_theme_settings',
+        'settings' => 'daisy_corp_read_more_text',
+        'type'     => 'text',
+    ) );
+
     // Base Font Size
     $wp_customize->add_setting( 'daisy_corp_base_font_size', array(
         'default'   => '16',

@@ -33,14 +33,16 @@ $sidebar_order = ( 'left' === $sidebar_pos ) ? 'order-1' : 'order-2';
                                 </a>
                             </h2>
                             <div class="text-xs opacity-50 mb-4 flex items-center gap-1">
-                                <i data-feather="calendar" class="w-3 h-3"></i>
+                                <i data-feather="calendar" class="w-[1em] h-[1em]"></i>
                                 <?php echo get_the_date(); ?>
                             </div>
                             <div class="prose prose-sm max-w-none">
                                 <?php the_excerpt(); ?>
                             </div>
                             <div class="card-actions justify-end mt-4">
-                                <a href="<?php the_permalink(); ?>" class="btn btn-ghost btn-sm">Read More</a>
+                                <a href="<?php the_permalink(); ?>" class="btn btn-ghost btn-sm">
+                                    <?php echo esc_html( get_theme_mod( 'daisy_corp_read_more_text', __( 'Read More', 'daisy-corp' ) ) ); ?>
+                                </a>
                             </div>
                         </div>
                     </article>

@@ -8,11 +8,11 @@ $main_order = ( 'left' === $sidebar_pos ) ? 'order-2' : 'order-1';
 $sidebar_order = ( 'left' === $sidebar_pos ) ? 'order-1' : 'order-2';
 
 $main_cols_class = $hide_sidebar ? 'lg:col-span-4' : 'lg:col-span-3';
-$grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16'; // Increased gap
+$grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
 ?>
 
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-8 <?php echo esc_attr( $grid_gap_class ); ?>">
-    <div class="<?php echo esc_attr( $main_cols_class ); ?> <?php echo esc_attr( $main_order ); ?>">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-8 <?php echo esc_attr( $grid_gap_class ); ?> items-start">
+    <div class="<?php echo esc_attr( $main_cols_class ); ?> <?php echo esc_attr( $main_order ); ?> w-full">
         <div class="max-w-4xl mx-auto px-4 lg:px-8">
             <?php while ( have_posts() ) : the_post(); ?>
                 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
@@ -43,7 +43,7 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16'; // Increased gap
     </div>
 
     <?php if ( ! $hide_sidebar ) : ?>
-    <aside class="lg:col-span-1 <?php echo esc_attr( $sidebar_order ); ?>">
+    <aside class="lg:col-span-1 <?php echo esc_attr( $sidebar_order ); ?> w-full">
         <?php get_sidebar(); ?>
     </aside>
     <?php endif; ?>
