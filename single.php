@@ -11,7 +11,7 @@ $main_cols_class = $hide_sidebar ? 'lg:col-span-4' : 'lg:col-span-3';
 $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
 ?>
 
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-8 <?php echo esc_attr( $grid_gap_class ); ?> items-start">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6 <?php echo esc_attr( $grid_gap_class ); ?> items-start">
     <div class="<?php echo esc_attr( $main_cols_class ); ?> <?php echo esc_attr( $main_order ); ?> w-full">
         <div class="max-w-4xl mx-auto px-4 lg:px-8">
             <?php while ( have_posts() ) : the_post(); ?>
@@ -52,15 +52,15 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
                             <?php the_tags('<span class="badge badge-sm badge-outline opacity-70">', '</span> <span class="badge badge-sm badge-outline opacity-70">', '</span>'); ?>
                         </div>
 
-                        <div class="mt-8 flex items-center gap-4 opacity-60">
+                        <div class="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 opacity-60">
                             <div class="avatar">
-                                <div class="w-10 rounded-full">
-                                    <?php echo get_avatar( get_the_author_meta( 'ID' ), 40 ); ?>
+                                <div class="w-12 sm:w-10 rounded-full">
+                                    <?php echo get_avatar( get_the_author_meta( 'ID' ), 48 ); ?>
                                 </div>
                             </div>
                             <div class="text-xs">
-                                <div class="font-bold opacity-80"><?php the_author(); ?></div>
-                                <div class="opacity-70"><?php the_author_meta( 'description' ); ?></div>
+                                <div class="font-bold opacity-80 text-sm sm:text-xs"><?php the_author(); ?></div>
+                                <div class="opacity-70 mt-1 sm:mt-0"><?php the_author_meta( 'description' ); ?></div>
                             </div>
                         </div>
                     </footer>

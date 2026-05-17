@@ -1,6 +1,6 @@
 </main><!-- #primary -->
 
-<footer class="footer p-10 bg-base-200 text-base-content border-t border-base-300">
+<footer class="footer p-6 md:p-10 bg-base-200 text-base-content border-t border-base-300">
   <aside>
     <div class="text-2xl font-bold mb-2"><?php bloginfo( 'name' ); ?></div>
     <p><?php bloginfo( 'description' ); ?></p>
@@ -19,6 +19,14 @@
     <?php dynamic_sidebar( 'footer-3' ); ?>
   <?php endif; ?>
 </footer>
+
+<button
+  onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+  class="btn btn-primary btn-circle fixed bottom-6 right-6 shadow-lg z-[100] md:hidden"
+  aria-label="Back to Top"
+>
+  <i data-feather="chevron-up"></i>
+</button>
 
 <?php wp_footer(); ?>
 <script>

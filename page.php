@@ -11,7 +11,7 @@ $main_cols_class = $hide_sidebar ? 'lg:col-span-4' : 'lg:col-span-3';
 $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
 ?>
 
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-8 <?php echo esc_attr( $grid_gap_class ); ?> items-start">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6 <?php echo esc_attr( $grid_gap_class ); ?> items-start">
     <div class="<?php echo esc_attr( $main_cols_class ); ?> <?php echo esc_attr( $main_order ); ?> w-full">
         <div class="max-w-4xl mx-auto px-4 lg:px-8">
             <?php while ( have_posts() ) : the_post(); ?>

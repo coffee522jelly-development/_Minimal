@@ -15,7 +15,7 @@ $main_order = ( 'left' === $sidebar_pos ) ? 'order-2' : 'order-1';
 $sidebar_order = ( 'left' === $sidebar_pos ) ? 'order-1' : 'order-2';
 ?>
 
-<div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-6 lg:gap-8">
     <div class="lg:col-span-3 <?php echo esc_attr( $main_order ); ?>">
         <header class="mb-12 border-b border-base-200 pb-8">
             <?php
@@ -27,10 +27,10 @@ $sidebar_order = ( 'left' === $sidebar_pos ) ? 'order-1' : 'order-2';
         <?php if ( have_posts() ) : ?>
             <div class="grid <?php echo esc_attr( $grid_cols_class ); ?> gap-6">
                 <?php while ( have_posts() ) : the_post(); ?>
-                    <article id="post-<?php the_ID(); ?>" <?php post_class('card bg-base-100 shadow-sm border border-base-200'); ?>>
+                    <article id="post-<?php the_ID(); ?>" <?php post_class('card bg-base-100 shadow-sm border border-base-200 overflow-hidden'); ?>>
                         <?php if ( has_post_thumbnail() ) : ?>
-                            <figure>
-                                <?php the_post_thumbnail('medium_large', array('class' => 'w-full h-48 object-cover')); ?>
+                            <figure class="aspect-video lg:aspect-auto">
+                                <?php the_post_thumbnail('medium_large', array('class' => 'w-full h-full lg:h-48 object-cover')); ?>
                             </figure>
                         <?php endif; ?>
                         <div class="card-body">
