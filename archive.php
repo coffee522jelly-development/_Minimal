@@ -6,9 +6,9 @@ $blog_cols = get_theme_mod( 'daisy_corp_blog_columns', '2' );
 
 $grid_cols_class = 'grid-cols-1';
 if ( '2' === $blog_cols ) {
-    $grid_cols_class = 'grid-cols-1 md:grid-cols-2';
+    $grid_cols_class = 'grid-cols-1 sm:grid-cols-2';
 } elseif ( '4' === $blog_cols ) {
-    $grid_cols_class = 'grid-cols-1 md:grid-cols-2 xl:grid-cols-4';
+    $grid_cols_class = 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-4';
 }
 
 $main_order = ( 'left' === $sidebar_pos ) ? 'order-2' : 'order-1';
