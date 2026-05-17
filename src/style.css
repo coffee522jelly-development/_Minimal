@@ -25,3 +25,12 @@
 .menu-horizontal details > ul {
   @apply absolute left-0 top-full mt-0 min-w-max;
 }
+
+/* TOC Smooth Scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+.daisy-corp-toc ul > li > a {
+  @apply hover:text-primary transition-colors;
+}

@@ -43,8 +43,13 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
                         </figure>
                     <?php endif; ?>
 
+                    <?php
+                    $toc_data = daisy_corp_get_toc( get_the_content() );
+                    echo $toc_data['toc'];
+                    ?>
+
                     <div class="prose prose-lg max-w-none leading-relaxed">
-                        <?php the_content(); ?>
+                        <?php echo apply_filters( 'the_content', $toc_data['content'] ); ?>
                     </div>
 
                     <footer class="mt-16 pt-10 border-t border-base-200">

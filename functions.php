@@ -541,6 +541,51 @@ function daisy_corp_custom_excerpt_length( $length ) {
 add_filter( 'excerpt_length', 'daisy_corp_custom_excerpt_length', 999 );
 
 /**
+ * Generate Table of Contents from h2 and h3 tags
+ */
+function daisy_corp_get_toc( $content ) {
+    // Regex to match h2 and h3
+    $pattern = '/<h([2-3])(.*?)>(.*?)<\/h\1>/i';
+
+    if ( ! preg_match_all( $pattern, $content, $matches, PREG_SET_ORDER ) ) {
+        return array( 'toc' => '', 'content' => $content );
+    }
+
+    $toc = '<div class="daisy-corp-toc mb-10 bg-base-200 p-6 rounded-2xl border border-base-300">';
+    $toc .= '<h6 class="text-sm font-bold mb-4 opacity-70 uppercase tracking-wider flex items-center gap-2"><i data-feather="list" class="w-4 h-4"></i> ' . esc_html__( 'Table of Contents', 'daisy-corp' ) . '</h6>';
+    $toc .= '<ul class="menu menu-sm p-0 opacity-80">';
+
+    $modified_content = $content;
+    $id_counts = array();
+
+    foreach ( $matches as $match ) {
+        $level = $match[1];
+        $text = strip_tags( $match[3] );
+
+        // Create a unique ID
+        $id = sanitize_title( $text );
+        if ( isset( $id_counts[$id] ) ) {
+            $id_counts[$id]++;
+            $id .= '-' . $id_counts[$id];
+        } else {
+            $id_counts[$id] = 1;
+        }
+
+        // Add ID to heading in content
+        $replacement = "<h$level id=\"$id\"" . $match[2] . ">" . $match[3] . "</h$level>";
+        $modified_content = str_replace( $match[0], $replacement, $modified_content );
+
+        // Add to TOC
+        $margin = ( $level == '3' ) ? 'ml-4' : '';
+        $toc .= "<li class=\"$margin\"><a href=\"#$id\">$text</a></li>";
+    }
+
+    $toc .= '</ul></div>';
+
+    return array( 'toc' => $toc, 'content' => $modified_content );
+}
+
+/**
  * Filter pagination links to add DaisyUI classes and ensure horizontal layout
  */
 function daisy_corp_pagination() {
