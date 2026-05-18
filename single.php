@@ -57,7 +57,7 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
                             <?php the_tags('<span class="badge badge-sm badge-outline opacity-70">', '</span> <span class="badge badge-sm badge-outline opacity-70">', '</span>'); ?>
                         </div>
 
-                        <div class="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 opacity-60">
+                        <div class="mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-4 opacity-60 animate-subtle-fade">
                             <div class="avatar">
                                 <div class="w-12 sm:w-10 rounded-full">
                                     <?php echo get_avatar( get_the_author_meta( 'ID' ), 48 ); ?>

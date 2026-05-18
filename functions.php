@@ -566,7 +566,7 @@ function daisy_corp_get_toc( $content ) {
     }
 
     $toc_title = get_theme_mod( 'daisy_corp_toc_title', __( 'Table of Contents', 'daisy-corp' ) );
-    $toc = '<div class="daisy-corp-toc mb-10 bg-base-200 p-6 rounded-2xl border border-base-300">';
+    $toc = '<div class="daisy-corp-toc mb-10 bg-base-200 p-6 rounded-2xl border border-base-300 animate-subtle-fade">';
     $toc .= '<h6 class="text-sm font-bold mb-4 opacity-70 uppercase tracking-wider flex items-center gap-2"><i data-feather="list" class="w-4 h-4"></i> ' . esc_html( $toc_title ) . '</h6>';
     $toc .= '<ul class="menu menu-sm p-0 opacity-80">';
 

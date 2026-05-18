@@ -34,3 +34,28 @@ html {
 .daisy-corp-toc ul > li > a {
   @apply hover:text-primary transition-colors;
 }
+
+/* Subtle Fade In Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-subtle-fade {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Card Hover Effects */
+.card {
+  @apply transition-all duration-300;
+}
+
+.card:hover {
+  @apply -translate-y-1 shadow-md;
+}
