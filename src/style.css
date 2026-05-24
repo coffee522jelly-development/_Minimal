@@ -115,3 +115,8 @@ html {
 .card:hover {
   @apply -translate-y-1 shadow-md;
 }
+
+/* H2 Custom Decoration */
+.prose h2 {
+  @apply relative pb-3 mb-8 border-b-4 border-primary rounded-sm;
+}
