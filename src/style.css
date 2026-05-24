@@ -22,18 +22,27 @@
   @apply relative;
 }
 
-.menu-horizontal details > ul {
-  @apply absolute left-0 top-full mt-0 min-w-max;
+/* Primary Desktop Hover Menu */
+@media (min-width: 1024px) {
+  .menu-horizontal > li.group > ul {
+    @apply hidden absolute left-0 top-full pt-2 opacity-0 scale-95 transition-all duration-200 pointer-events-none;
+  }
+  .menu-horizontal > li.group:hover > ul {
+    @apply block opacity-100 scale-100 pointer-events-auto;
+  }
+
+  /* Multi-level Dropdowns (Right Side) */
+  .menu-horizontal li.group ul li.group > ul {
+    @apply hidden absolute left-full top-0 pl-2 opacity-0 scale-95 transition-all duration-200 pointer-events-none;
+  }
+  .menu-horizontal li.group ul li.group:hover > ul {
+    @apply block opacity-100 scale-100 pointer-events-auto;
+  }
 }
 
-/* Desktop Hover Menu */
-@media (min-width: 1024px) {
-  .menu-horizontal li:hover > details {
-    @apply block;
-  }
-  .menu-horizontal li:hover > details > ul {
-    @apply block;
-  }
+/* Base styles for standard WP menu nesting */
+.menu-horizontal li ul {
+  @apply z-50;
 }
 
 /* TOC Smooth Scroll */

@@ -27,6 +27,7 @@
     --tracking-wider: 0.05em;
     --leading-tight: 1.25;
     --leading-relaxed: 1.625;
+    --radius-lg: 0.5rem;
     --radius-2xl: 1rem;
     --radius-3xl: 1.5rem;
     --aspect-video: 16 / 9;
@@ -1213,6 +1214,9 @@
   .fixed {
     position: fixed;
   }
+  .relative {
+    position: relative;
+  }
   .sticky {
     position: sticky;
   }
@@ -1388,6 +1392,9 @@
   }
   .z-\[1\] {
     z-index: 1;
+  }
+  .z-\[50\] {
+    z-index: 50;
   }
   .z-\[100\] {
     z-index: 100;
@@ -2389,6 +2396,9 @@
   .mb-12 {
     margin-bottom: calc(var(--spacing) * 12);
   }
+  .ml-1 {
+    margin-left: calc(var(--spacing) * 1);
+  }
   .ml-4 {
     margin-left: calc(var(--spacing) * 4);
   }
@@ -2645,11 +2655,32 @@
   .max-w-sm {
     max-width: var(--container-sm);
   }
+  .min-w-\[200px\] {
+    min-width: 200px;
+  }
   .shrink-0 {
     flex-shrink: 0;
   }
   .flex-grow {
     flex-grow: 1;
+  }
+  .link {
+    @layer daisyui.l1.l2.l3 {
+      cursor: pointer;
+      text-decoration-line: underline;
+      &:focus {
+        --tw-outline-style: none;
+        outline-style: none;
+        @media (forced-colors: active) {
+          outline: 2px solid transparent;
+          outline-offset: 2px;
+        }
+      }
+      &:focus-visible {
+        outline: 2px solid currentColor;
+        outline-offset: 2px;
+      }
+    }
   }
   .grid-cols-1 {
     grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -2742,13 +2773,12 @@
   .rounded-full {
     border-radius: calc(infinity * 1px);
   }
+  .rounded-lg {
+    border-radius: var(--radius-lg);
+  }
   .rounded-t-2xl {
     border-top-left-radius: var(--radius-2xl);
     border-top-right-radius: var(--radius-2xl);
-  }
-  .rounded-t-none {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
   }
   .rounded-b-2xl {
     border-bottom-right-radius: var(--radius-2xl);
@@ -3095,20 +3125,64 @@
 .menu-horizontal details {
   position: relative;
 }
-.menu-horizontal details > ul {
-  position: absolute;
-  top: 100%;
-  left: calc(var(--spacing) * 0);
-  margin-top: calc(var(--spacing) * 0);
-  min-width: max-content;
-}
 @media (min-width: 1024px) {
-  .menu-horizontal li:hover > details {
-    display: block;
+  .menu-horizontal > li.group > ul {
+    pointer-events: none;
+    position: absolute;
+    top: 100%;
+    left: calc(var(--spacing) * 0);
+    display: none;
+    --tw-scale-x: 95%;
+    --tw-scale-y: 95%;
+    --tw-scale-z: 95%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+    padding-top: calc(var(--spacing) * 2);
+    opacity: 0%;
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
   }
-  .menu-horizontal li:hover > details > ul {
+  .menu-horizontal > li.group:hover > ul {
+    pointer-events: auto;
     display: block;
+    --tw-scale-x: 100%;
+    --tw-scale-y: 100%;
+    --tw-scale-z: 100%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+    opacity: 100%;
   }
+  .menu-horizontal li.group ul li.group > ul {
+    pointer-events: none;
+    position: absolute;
+    top: calc(var(--spacing) * 0);
+    left: 100%;
+    display: none;
+    --tw-scale-x: 95%;
+    --tw-scale-y: 95%;
+    --tw-scale-z: 95%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+    padding-left: calc(var(--spacing) * 2);
+    opacity: 0%;
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+    --tw-duration: 200ms;
+    transition-duration: 200ms;
+  }
+  .menu-horizontal li.group ul li.group:hover > ul {
+    pointer-events: auto;
+    display: block;
+    --tw-scale-x: 100%;
+    --tw-scale-y: 100%;
+    --tw-scale-z: 100%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+    opacity: 100%;
+  }
+}
+.menu-horizontal li ul {
+  z-index: 50;
 }
 html {
   scroll-behavior: smooth;
@@ -3522,6 +3596,21 @@ html {
   inherits: false;
   initial-value: 0 0 #0000;
 }
+@property --tw-scale-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-scale-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-scale-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
 @property --tw-duration {
   syntax: "*";
   inherits: false;
@@ -3562,6 +3651,9 @@ html {
       --tw-ring-offset-width: 0px;
       --tw-ring-offset-color: #fff;
       --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-scale-x: 1;
+      --tw-scale-y: 1;
+      --tw-scale-z: 1;
       --tw-duration: initial;
       --tw-translate-x: 0;
       --tw-translate-y: 0;

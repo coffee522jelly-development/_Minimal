@@ -27,30 +27,25 @@ endif;
 class Daisy_Corp_Walker_Nav_Menu extends Walker_Nav_Menu {
     function start_lvl( &$output, $depth = 0, $args = null ) {
         $indent = str_repeat("\t", $depth);
-        $output .= "\n$indent<ul class=\"p-2 bg-base-100 rounded-t-none shadow-lg z-[1]\">\n";
+        $output .= "\n$indent<ul class=\"p-2 bg-base-100 rounded-lg shadow-lg z-[50] min-w-[200px]\">\n";
     }
 
     function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
         $classes = empty( $item->classes ) ? array() : (array) $item->classes;
         $has_children = in_array( 'menu-item-has-children', $classes );
 
-        $output .= '<li>';
+        $output .= '<li class="relative group">';
 
+        // Output the link for everyone
+        $output .= '<a href="' . esc_url( $item->url ) . '" class="flex items-center justify-between">';
+        $output .= esc_html( $item->title );
         if ( $has_children ) {
-            $output .= '<details>';
-            $output .= '<summary>' . esc_html( $item->title ) . '</summary>';
-        } else {
-            $output .= '<a href="' . esc_url( $item->url ) . '">' . esc_html( $item->title ) . '</a>';
+            $output .= '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1 opacity-50" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>';
         }
+        $output .= '</a>';
     }
 
     function end_el( &$output, $item, $depth = 0, $args = null ) {
-        $classes = empty( $item->classes ) ? array() : (array) $item->classes;
-        $has_children = in_array( 'menu-item-has-children', $classes );
-
-        if ( $has_children ) {
-            $output .= '</details>';
-        }
         $output .= '</li>';
     }
 }
