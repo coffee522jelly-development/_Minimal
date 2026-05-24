@@ -601,6 +601,25 @@ function daisy_corp_get_toc( $content ) {
 }
 
 /**
+ * Calculate reading time based on character count (optimized for Japanese)
+ */
+function daisy_corp_get_reading_time() {
+    $content = get_post_field( 'post_content', get_the_ID() );
+    $text = strip_tags( $content );
+
+    // Count characters (multibyte safe)
+    $char_count = mb_strlen( preg_replace( '/\s+/', '', $text ) );
+
+    // Average reading speed for Japanese (500 chars/min)
+    $speed = 500;
+    $time = ceil( $char_count / $speed );
+
+    if ( $time < 1 ) $time = 1;
+
+    return sprintf( esc_html__( '%d min read', 'daisy-corp' ), $time );
+}
+
+/**
  * Filter pagination links to add DaisyUI classes and ensure horizontal layout
  */
 function daisy_corp_pagination() {

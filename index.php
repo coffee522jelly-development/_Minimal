@@ -32,9 +32,15 @@ $sidebar_order = ( 'left' === $sidebar_pos ) ? 'order-1' : 'order-2';
                                     <?php the_title(); ?>
                                 </a>
                             </h2>
-                            <div class="text-xs opacity-50 mb-4 flex items-center gap-1">
-                                <i data-feather="calendar"></i>
-                                <?php echo get_the_date(); ?>
+                            <div class="text-xs opacity-50 mb-4 flex items-center gap-3">
+                                <span class="flex items-center gap-1">
+                                    <i data-feather="calendar"></i>
+                                    <?php echo get_the_date(); ?>
+                                </span>
+                                <span class="flex items-center gap-1">
+                                    <i data-feather="clock"></i>
+                                    <?php echo daisy_corp_get_reading_time(); ?>
+                                </span>
                             </div>
                             <div class="prose prose-sm max-w-none">
                                 <?php the_excerpt(); ?>

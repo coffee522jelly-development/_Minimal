@@ -23,6 +23,10 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
                                 <i data-feather="calendar"></i>
                                 <?php echo get_the_date(); ?>
                             </span>
+                            <span class="flex items-center gap-1">
+                                <i data-feather="clock"></i>
+                                <?php echo daisy_corp_get_reading_time(); ?>
+                            </span>
                             <span class="flex items-center gap-2">
                                 <?php
                                 $categories = get_the_category();
