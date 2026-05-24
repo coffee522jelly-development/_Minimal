@@ -18,7 +18,7 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
                 <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                     <header class="mb-10">
                         <h1 class="text-4xl font-extrabold mb-4 leading-tight"><?php the_title(); ?></h1>
-                        <div class="flex items-center gap-4 text-xs opacity-50">
+                        <div class="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs opacity-50">
                             <span class="flex items-center gap-1">
                                 <i data-feather="calendar"></i>
                                 <?php echo get_the_date(); ?>
@@ -27,13 +27,13 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
                                 <i data-feather="clock"></i>
                                 <?php echo daisy_corp_get_reading_time(); ?>
                             </span>
-                            <span class="flex items-center gap-2">
+                            <span class="flex flex-wrap items-center gap-y-2 gap-x-2">
                                 <?php
                                 $categories = get_the_category();
                                 if ( ! empty( $categories ) ) {
                                     foreach ( $categories as $index => $category ) {
-                                        if ( $index > 0 ) echo ', ';
-                                        echo '<span class="flex items-center gap-1"><i data-feather="tag"></i><a href="' . esc_url( get_category_link( $category->term_id ) ) . '">' . esc_html( $category->name ) . '</a></span>';
+                                        if ( $index > 0 ) echo '<span class="opacity-50">,</span>';
+                                        echo '<span class="flex items-center gap-1"><i data-feather="tag"></i><a href="' . esc_url( get_category_link( $category->term_id ) ) . '" class="hover:text-primary transition-colors">' . esc_html( $category->name ) . '</a></span>';
                                     }
                                 }
                                 ?>
