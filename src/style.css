@@ -22,27 +22,39 @@
   @apply relative;
 }
 
-/* Primary Desktop Hover Menu */
+/* Primary Desktop Hover Menu - Standard WP Hierarchy Support */
 @media (min-width: 1024px) {
-  .menu-horizontal > li.group > ul {
-    @apply hidden absolute left-0 top-full pt-2 opacity-0 scale-95 transition-all duration-200 pointer-events-none;
+  .menu-horizontal > li {
+    @apply relative;
   }
-  .menu-horizontal > li.group:hover > ul {
+
+  .menu-horizontal .sub-menu {
+    @apply hidden absolute left-0 top-full min-w-[220px] bg-base-100 p-2 rounded-lg shadow-xl z-50 opacity-0 scale-95 transition-all duration-200 pointer-events-none border border-base-200;
+  }
+
+  /* Reveal on hover */
+  .menu-horizontal li:hover > .sub-menu {
     @apply block opacity-100 scale-100 pointer-events-auto;
   }
 
-  /* Multi-level Dropdowns (Right Side) */
-  .menu-horizontal li.group ul li.group > ul {
-    @apply hidden absolute left-full top-0 pl-2 opacity-0 scale-95 transition-all duration-200 pointer-events-none;
+  /* Multi-level Flyout (Level 2+) */
+  .menu-horizontal .sub-menu li {
+    @apply relative;
   }
-  .menu-horizontal li.group ul li.group:hover > ul {
-    @apply block opacity-100 scale-100 pointer-events-auto;
+
+  .menu-horizontal .sub-menu .sub-menu {
+    @apply left-full top-0 ml-1;
   }
 }
 
-/* Base styles for standard WP menu nesting */
-.menu-horizontal li ul {
-  @apply z-50;
+/* Mobile & Global Hierarchy Styling (Sidebars/Footer) */
+.menu li > ul:not(.menu-horizontal ul),
+.footer-widget-nav ul ul {
+  @apply ml-4 mt-1 border-l border-base-content/10 pl-4 py-1;
+}
+
+.footer-widget-nav a {
+  @apply link link-hover text-sm opacity-80 py-1 inline-block;
 }
 
 /* TOC Smooth Scroll */

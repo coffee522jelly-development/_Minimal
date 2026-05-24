@@ -67,7 +67,7 @@
   $menu_position = get_theme_mod( 'daisy_corp_menu_position', 'center' );
 ?>
 
-<header class="navbar bg-base-100 border-b border-base-200 sticky top-0 z-50 px-4 md:px-8">
+<header class="navbar bg-base-100 border-b border-base-200 sticky top-0 z-50 px-4 md:px-8 overflow-visible">
   <div class="navbar-start">
     <div class="dropdown">
       <div tabindex="0" role="button" class="btn btn-ghost btn-circle lg:hidden">
