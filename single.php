@@ -74,7 +74,7 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
                             </div>
                             <div class="text-xs">
                                 <div class="font-bold opacity-80 text-sm sm:text-xs"><?php the_author(); ?></div>
-                                <div class="opacity-70 mt-1 sm:mt-0"><?php the_author_meta( 'description' ); ?></div>
+                                <div class="opacity-70 mt-1 sm:mt-0"><?php echo esc_html( get_the_author_meta( 'description' ) ); ?></div>
                             </div>
                         </div>
                     </footer>
