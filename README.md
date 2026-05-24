@@ -1,62 +1,56 @@
-# Daisy Corp - Minimalist Corporate WordPress Theme
+# Daisy Corp - ミニマル・コーポレート WordPress テーマ
 
-Daisy Corp is a high-functionality, minimalist WordPress theme built with **DaisyUI v5** and **Tailwind CSS v4**. It is specifically optimized for corporate information architecture and a superior reading experience.
+Daisy Corp は、**DaisyUI v5** と **Tailwind CSS v4** をベースに構築された、機能性とミニマリズムを両立させた WordPress テーマです。一般的なコーポレートサイトの情報設計に最適化されており、読読体験（リーダビリティ）を追求した作りになっています。
 
-## ✨ Features
+## ✨ 特徴
 
-### 🏢 Corporate Information Architecture
-- **3-Level Hierarchical Category Tree:** A custom widget and shortcode (`[category_tree]`) that displays your categories up to 3 levels deep with live post counts.
-- **Dynamic Footer:** Three fully widgetized footer columns for modular company information.
-- **Hierarchical Navigation:** Support for multi-level page structures in both the header and footer.
-- **Customizable Contact Button:** Set your own destination URL and label for the primary header action.
+### 🏢 コーポレート向け情報設計
+- **3階層対応カテゴリーツリー:** サイドバー等に設置可能なカスタムウィジェット。記事数カウント付きで、3階層までの親子関係を美しく表示します。
+- **動的フッター:** 3つのウィジェットエリア（カラム）を完備。会社情報やリンクを自由に管理できます。
+- **階層型ナビゲーション:** ヘッダーおよびフッターで固定ページの親子構造に対応。デスクトップではマウスオーバーによる洗練されたドロップダウン表示が可能です。
+- **カスタムお問い合わせボタン:** ヘッダー右端のボタンのテキストとURLをテーマ設定から自由に変更できます。
 
-### 📖 Enhanced Reading Experience
-- **Automated "3-Piece Set":** Every post and page automatically displays Breadcrumbs, a Table of Contents (TOC), and an Estimated Reading Time in a cohesive, minimalist block.
-- **TOC Generator:** Automatically parses H2 and H3 tags to create a minimalist, smooth-scrolling table of contents with a customizable header title.
-- **Japanese-Optimized Reading Time:** Accurate estimates calculated at 500 characters per minute.
-- **Focused Layouts:** Content area constrained to a readable width (`max-w-4xl`) with generous professional spacing.
-- **Minimalist Author Box:** A subtle section at the end of posts featuring the author's gravatar and bio.
+### 📖 充実した読書体験（3点セットの自動表示）
+- **「目次・パンくず・読了時間」の自動生成:** 全ての投稿と固定ページで、これら3つの要素が最適なレイアウトで自動表示されます。
+- **目次 (TOC) 生成機能:** 本文内の H2・H3 タグを解析し、スムーズスクロール対応の目次を自動生成します（タイトル名も変更可能）。
+- **日本語最適化された読了時間:** 日本語の平均読書速度（1分間500文字）に基づき、正確な読了目安を表示します。
+- **読みやすいレイアウト:** 本文の最大幅を最適化（`max-w-4xl`）し、プロフェッショナルな余白設計を採用しています。
+- **ミニマルな著者ボックス:** 記事の最後に、著者のアバターとプロフィールを控えめに表示します。
 
-### 🎨 Deep Customization (via WordPress Customizer)
-- **32 DaisyUI Themes:** Choose from all default DaisyUI presets (Light, Dark, Retro, Cupcake, Synthwave, etc.).
-- **Brand Color Overrides:** Manually set your site's **Primary** and **Secondary** colors regardless of the chosen theme.
-- **Flexible Grid:** Choice of **1, 2, or 4 columns** for blog and archive listings (intelligently enforced 1-column on mobile).
-- **Layout Toggles:**
-  - Sidebar Position: Left or Right.
-  - Menu Position: Center or Right.
-  - Sidebar Visibility: Option to hide the sidebar on single posts/pages for a focused view.
-- **Advanced Typography:**
-  - **Web Font Selector:** Choose from several professional Google Fonts (Inter, Noto Sans JP, Roboto, etc.).
-  - **Base Font Size:** Adjust the global text size (icons will automatically scale to match!).
+### 🎨 高度なカスタマイズ（テーマカスタマイザー）
+- **32種類の DaisyUI テーマ:** Light, Dark, Retro, Cupcake, Synthwave など、DaisyUI 標準の全テーマをワンクリックで切り替え可能。
+- **ブランドカラー設定:** 選択したテーマに関わらず、独自の**プライマリーカラー**と**セカンダリーカラー**を設定できます。
+- **柔軟なブログレイアウト:** 記事一覧を **1列（リスト）、2列、または 4列** のグリッドから選択可能。
+- **レイアウト切り替え:**
+  - サイドバー位置: 左・右の切り替え。
+  - メニュー位置: 中央・右の切り替え。
+  - サイドバー表示: 個別ページでのサイドバー非表示（1カラム集中モード）設定。
+- **タイポグラフィ:**
+  - **Webフォント選択:** Inter, Noto Sans JP, Roboto など、主要なフォントを選択可能。
+  - **ベース文字サイズ:** 全体の文字サイズを調整でき、アイコンも自動で連動してスケールします。
 
-### 📱 Mobile-First Design
-- **Enforced Mobile Grid:** Cards are strictly 1-column on smartphones for clarity.
-- **Touch-Optimized Menu:** Large hit areas and a wide mobile drawer.
-- **Responsive Media:** Aspect-ratio controlled thumbnails (aspect-video on mobile).
-- **Back to Top:** A subtle floating button for mobile users.
+### 📱 スマートフォン最適化
+- **強制1カラム表示:** モバイル表示時は、設定に関わらずカードを1列に並べ、視認性を確保します。
+- **タッチ操作に最適化されたメニュー:** 大きめのヒットエリアと、横幅いっぱいに広がるモバイルドロワーを採用。
+- **レスポンシブ・メディア:** モバイルでは画像サムネイルをアスペクト比固定（16:9）で表示。
+- **トップへ戻るボタン:** モバイルユーザー向けの浮遊感のあるトップ復帰ボタンを搭載。
 
-### 🛠 Technical Excellence
-- **Tech Stack:** Tailwind CSS v4 + DaisyUI v5.
-- **Feather Icons:** High-quality, auto-scaling icons integrated via CDN.
-- **Custom Nav Walker:** Seamlessly bridges WordPress menu logic with DaisyUI dropdown markup.
-- **Clean Code:** Secure escaping and sanitization throughout.
+### 🛠 技術仕様
+- **最新スタック:** Tailwind CSS v4 + DaisyUI v5。
+- **Feather Icons:** 高品質なアイコンを統合。文字サイズに合わせて自動スケールします。
+- **カスタム Nav Walker:** WordPress のメニュー構造を DaisyUI のドロップダウン形式へシームレスに変換。
+- **クリーンな装飾:** H2見出しへのプライマリーカラーの下線など、シンプルながらアクセントの効いたデザイン。
 
-## 🚀 Installation
+## 🚀 インストール方法
 
-1. **Download:** ZIP the contents of this repository.
-2. **Upload:** Go to **Appearance > Themes > Add New > Upload Theme** in your WordPress dashboard.
-3. **Activate:** Upload the ZIP and click **Activate**.
-4. **Setup:**
-   - Create your menu in **Appearance > Menus** and assign it to the **Primary** location.
-   - Configure your site identity and brand colors in **Appearance > Customize > Theme Settings**.
-   - Add the **Daisy Corp Category Tree** widget and other content to your sidebars in **Appearance > Widgets**.
-
-## 🛠 For Developers
-
-This theme is ready for further customization.
-- **Styles:** Edit `src/style.css` to add custom Tailwind layers or overrides.
-- **Build:** Run `npm install` and then `npm run build` to re-generate the `dist/output.css`.
-- **Watch:** Use `npm run watch` during development.
+1. **ダウンロード:** このリポジトリの内容を ZIP 形式で圧縮します。
+2. **アップロード:** WordPress 管理画面の **外観 > テーマ > 新規追加 > テーマをアップロード** から ZIP ファイルを選択します。
+3. **有効化:** インストール後、「有効化」をクリックします。
+4. **初期設定:**
+   - **メニュー:** 「外観 > メニュー」でメニューを作成し、「Primary」の位置に割り当ててください。
+   - **カスタマイズ:** 「外観 > カスタマイズ > テーマ設定」から、テーマ、カラー、フォントなどを自由に設定してください。
+   - **ウィジェット:** 「外観 > ウィジェット」から、サイドバーやフッターに「Daisy Corp カテゴリーツリー」などを追加してください。
 
 ---
 Built with ❤️ for professional corporate minimalism.
+By **coffee** (v1.0.1)
