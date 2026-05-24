@@ -80,6 +80,7 @@
           'container'      => false,
           'items_wrap'     => '<ul tabindex="0" class="menu menu-md dropdown-content mt-3 z-[1] p-3 shadow bg-base-100 rounded-box w-[80vw] max-w-sm">%3$s</ul>',
           'fallback_cb'    => false,
+          'walker'         => new Daisy_Corp_Walker_Nav_Menu(),
         ) );
       ?>
     </div>

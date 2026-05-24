@@ -30,11 +30,12 @@
     @apply relative;
   }
 
+  /* Hide sub-menus by default with animation properties */
   .menu-horizontal .sub-menu {
-    @apply hidden absolute left-0 top-full min-w-[220px] bg-base-100 p-2 rounded-lg shadow-xl z-50 opacity-0 scale-95 transition-all duration-200 pointer-events-none border border-base-200;
+    @apply hidden absolute left-0 top-full min-w-[220px] bg-base-100 p-2 rounded-lg shadow-xl z-[999] opacity-0 scale-95 transition-all duration-200 pointer-events-none border border-base-200;
   }
 
-  /* Reveal on hover */
+  /* Reveal on hover - use flex to support horizontal layout inside sub-menu if needed, but standard is block */
   .menu-horizontal li:hover > .sub-menu {
     @apply block opacity-100 scale-100 pointer-events-auto;
   }
@@ -45,14 +46,23 @@
   }
 
   .menu-horizontal .sub-menu .sub-menu {
-    @apply left-full top-0 ml-1;
+    @apply left-full top-0 -mt-2 ml-1;
+  }
+
+  /* Active states for parent links */
+  .menu-horizontal > li:hover > a {
+    @apply bg-base-200;
   }
 }
 
-/* Mobile & Global Hierarchy Styling (Sidebars/Footer) */
-.menu li > ul:not(.menu-horizontal ul),
+/* Mobile & Global Hierarchy Styling (Sidebars/Footer/Mobile Drawer) */
+.menu:not(.menu-horizontal) li > ul,
 .footer-widget-nav ul ul {
-  @apply ml-4 mt-1 border-l border-base-content/10 pl-4 py-1;
+  @apply ml-4 mt-1 border-l border-base-content/10 pl-4 py-1 flex flex-col gap-1;
+}
+
+.menu:not(.menu-horizontal) li > ul li a {
+    @apply py-1;
 }
 
 .footer-widget-nav a {
