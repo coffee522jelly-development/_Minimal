@@ -48,8 +48,18 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <style>
         :root {
-            --color-primary: <?php echo esc_html( get_theme_mod( 'daisy_corp_primary_color', '#3b82f6' ) ); ?> !important;
-            --color-secondary: <?php echo esc_html( get_theme_mod( 'daisy_corp_secondary_color', '#64748b' ) ); ?> !important;
+            <?php
+            $primary_color = get_theme_mod( 'daisy_corp_primary_color', '#3b82f6' );
+            $secondary_color = get_theme_mod( 'daisy_corp_secondary_color', '#64748b' );
+
+            if ( $primary_color !== '#3b82f6' ) : ?>
+                --color-primary: <?php echo esc_html( $primary_color ); ?> !important;
+            <?php endif; ?>
+
+            <?php if ( $secondary_color !== '#64748b' ) : ?>
+                --color-secondary: <?php echo esc_html( $secondary_color ); ?> !important;
+            <?php endif; ?>
+
             font-size: <?php echo esc_html( get_theme_mod( 'daisy_corp_base_font_size', '16' ) ); ?>px !important;
         }
         body {
