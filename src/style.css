@@ -26,6 +26,16 @@
   @apply absolute left-0 top-full mt-0 min-w-max;
 }
 
+/* Desktop Hover Menu */
+@media (min-width: 1024px) {
+  .menu-horizontal li:hover > details {
+    @apply block;
+  }
+  .menu-horizontal li:hover > details > ul {
+    @apply block;
+  }
+}
+
 /* TOC Smooth Scroll */
 html {
   scroll-behavior: smooth;
@@ -33,6 +43,19 @@ html {
 
 .daisy-corp-toc ul > li > a {
   @apply hover:text-primary transition-colors;
+}
+
+/* Footer Navigation Styling for Widgets */
+.footer-widget-nav ul {
+  @apply flex flex-col gap-2;
+}
+
+.footer-widget-nav ul ul {
+  @apply ml-4 mt-2 border-l border-base-content/10 pl-4;
+}
+
+.footer-widget-nav a {
+  @apply link link-hover text-sm opacity-80;
 }
 
 /* Subtle Fade In Animation */

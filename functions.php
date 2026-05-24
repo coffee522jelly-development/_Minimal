@@ -26,7 +26,8 @@ endif;
  */
 class Daisy_Corp_Walker_Nav_Menu extends Walker_Nav_Menu {
     function start_lvl( &$output, $depth = 0, $args = null ) {
-        $output .= '<ul class="p-2 bg-base-100 rounded-t-none shadow-lg z-[1]">';
+        $indent = str_repeat("\t", $depth);
+        $output .= "\n$indent<ul class=\"p-2 bg-base-100 rounded-t-none shadow-lg z-[1]\">\n";
     }
 
     function start_el( &$output, $item, $depth = 0, $args = null, $id = 0 ) {
@@ -35,7 +36,7 @@ class Daisy_Corp_Walker_Nav_Menu extends Walker_Nav_Menu {
 
         $output .= '<li>';
 
-        if ( $has_children && $depth === 0 ) {
+        if ( $has_children ) {
             $output .= '<details>';
             $output .= '<summary>' . esc_html( $item->title ) . '</summary>';
         } else {
@@ -47,7 +48,7 @@ class Daisy_Corp_Walker_Nav_Menu extends Walker_Nav_Menu {
         $classes = empty( $item->classes ) ? array() : (array) $item->classes;
         $has_children = in_array( 'menu-item-has-children', $classes );
 
-        if ( $has_children && $depth === 0 ) {
+        if ( $has_children ) {
             $output .= '</details>';
         }
         $output .= '</li>';
@@ -76,7 +77,7 @@ function daisy_corp_widgets_init() {
 		'name'          => esc_html__( 'Footer Column 1', 'daisy-corp' ),
 		'id'            => 'footer-1',
 		'description'   => esc_html__( 'Add widgets here for the first footer column.', 'daisy-corp' ),
-		'before_widget' => '<nav>',
+		'before_widget' => '<nav class="footer-widget-nav">',
 		'after_widget'  => '</nav>',
 		'before_title'  => '<h6 class="footer-title">',
 		'after_title'   => '</h6>',
@@ -86,7 +87,7 @@ function daisy_corp_widgets_init() {
 		'name'          => esc_html__( 'Footer Column 2', 'daisy-corp' ),
 		'id'            => 'footer-2',
 		'description'   => esc_html__( 'Add widgets here for the second footer column.', 'daisy-corp' ),
-		'before_widget' => '<nav>',
+		'before_widget' => '<nav class="footer-widget-nav">',
 		'after_widget'  => '</nav>',
 		'before_title'  => '<h6 class="footer-title">',
 		'after_title'   => '</h6>',
@@ -96,7 +97,7 @@ function daisy_corp_widgets_init() {
 		'name'          => esc_html__( 'Footer Column 3', 'daisy-corp' ),
 		'id'            => 'footer-3',
 		'description'   => esc_html__( 'Add widgets here for the third footer column.', 'daisy-corp' ),
-		'before_widget' => '<nav>',
+		'before_widget' => '<nav class="footer-widget-nav">',
 		'after_widget'  => '</nav>',
 		'before_title'  => '<h6 class="footer-title">',
 		'after_title'   => '</h6>',
