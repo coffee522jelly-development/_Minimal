@@ -566,7 +566,7 @@ function daisy_corp_get_toc( $content ) {
     }
 
     $toc_title = get_theme_mod( 'daisy_corp_toc_title', __( 'Table of Contents', 'daisy-corp' ) );
-    $toc = '<div class="daisy-corp-toc mb-10 bg-base-200 p-6 rounded-2xl border border-base-300 animate-subtle-fade">';
+    $toc = '<div class="daisy-corp-toc mb-0 bg-base-200 p-6 rounded-t-2xl border-t border-x border-base-300 animate-subtle-fade">';
     $toc .= '<h6 class="text-sm font-bold mb-4 opacity-70 uppercase tracking-wider flex items-center gap-2"><i data-feather="list" class="w-4 h-4"></i> ' . esc_html( $toc_title ) . '</h6>';
     $toc .= '<ul class="menu menu-sm p-0 opacity-80">';
 
@@ -617,6 +617,35 @@ function daisy_corp_get_reading_time() {
     if ( $time < 1 ) $time = 1;
 
     return sprintf( esc_html__( '%d min read', 'daisy-corp' ), $time );
+}
+
+/**
+ * Generate Breadcrumbs with DaisyUI classes
+ */
+function daisy_corp_get_breadcrumbs() {
+    if ( is_front_page() ) return '';
+
+    $breadcrumbs = '<div class="text-xs breadcrumbs mb-6 opacity-60">';
+    $breadcrumbs .= '<ul>';
+    $breadcrumbs .= '<li><a href="' . esc_url( home_url( '/' ) ) . '"><i data-feather="home" class="mr-1"></i> ' . esc_html__( 'Home', 'daisy-corp' ) . '</a></li>';
+
+    if ( is_single() ) {
+        $categories = get_the_category();
+        if ( ! empty( $categories ) ) {
+            $cat = $categories[0];
+            $breadcrumbs .= '<li><a href="' . esc_url( get_category_link( $cat->term_id ) ) . '">' . esc_html( $cat->name ) . '</a></li>';
+        }
+        $breadcrumbs .= '<li>' . get_the_title() . '</li>';
+    } elseif ( is_page() ) {
+        $breadcrumbs .= '<li>' . get_the_title() . '</li>';
+    } elseif ( is_archive() ) {
+        $breadcrumbs .= '<li>' . get_the_archive_title() . '</li>';
+    }
+
+    $breadcrumbs .= '</ul>';
+    $breadcrumbs .= '</div>';
+
+    return $breadcrumbs;
 }
 
 /**

@@ -48,8 +48,13 @@ $grid_gap_class = $hide_sidebar ? '' : 'lg:gap-16';
                     <?php endif; ?>
 
                     <?php
+                    echo daisy_corp_get_breadcrumbs();
+
                     $toc_data = daisy_corp_get_toc( get_the_content() );
-                    echo $toc_data['toc'];
+                    if ( ! empty( $toc_data['toc'] ) ) {
+                        echo $toc_data['toc'];
+                        echo '<div class="flex items-center gap-2 text-xs opacity-50 mb-10 px-6 py-2 bg-base-200 border-x border-b border-base-300 rounded-b-2xl"><i data-feather="clock" class="w-[1em] h-[1em]"></i>' . daisy_corp_get_reading_time() . '</div>';
+                    }
                     ?>
 
                     <div class="prose prose-lg max-w-none leading-relaxed">
