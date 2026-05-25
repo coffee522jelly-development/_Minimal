@@ -8,11 +8,15 @@
 
         // Function to wait for shiki to be loaded
         const waitForShiki = () => {
-            return new Promise((resolve) => {
+            return new Promise((resolve, reject) => {
+                let attempts = 0;
                 const check = () => {
                     if (window.shiki && window.shiki.codeToHtml) {
                         resolve(window.shiki);
+                    } else if (attempts > 50) {
+                        reject('Shiki timeout');
                     } else {
+                        attempts++;
                         setTimeout(check, 100);
                     }
                 };
@@ -20,16 +24,23 @@
             });
         };
 
-        const shikiObj = await waitForShiki();
+        let shikiObj;
+        try {
+            shikiObj = await waitForShiki();
+        } catch (e) {
+            console.warn('Shiki not loaded, falling back to basic styling');
+        }
+
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'light';
-        // Map common DaisyUI themes to Shiki themes
-        const shikiTheme = (currentTheme === 'dark' || currentTheme === 'dracula' || currentTheme === 'black' || currentTheme === 'luxury' || currentTheme === 'night') ? 'github-dark' : 'github-light';
+        const darkThemes = ['dark', 'dracula', 'black', 'luxury', 'night', 'coffee', 'sunset', 'dim'];
+        const isDark = darkThemes.includes(currentTheme);
+        const shikiTheme = isDark ? 'github-dark' : 'github-light';
 
         for (const block of codeBlocks) {
             const pre = block.parentElement;
 
             // Container for relative positioning
-            pre.classList.add('relative', 'group', 'mt-6', 'mb-6');
+            pre.classList.add('relative', 'group', 'overflow-visible');
 
             // Detect Language
             let lang = 'text';
@@ -37,45 +48,54 @@
             const langClass = classes.find(c => c.startsWith('language-'));
             if (langClass) {
                 lang = langClass.replace('language-', '');
+            } else if (pre.classList.contains('wp-block-code')) {
+                // Try to find lang in pre classes too (WordPress sometimes puts it there)
+                const preLangClass = Array.from(pre.classList).find(c => c.startsWith('language-'));
+                if (preLangClass) lang = preLangClass.replace('language-', '');
             }
 
-            // Apply Shiki Highlighting
-            try {
-                const code = block.innerText;
-                const highlighted = await shikiObj.codeToHtml(code, {
-                    lang: lang,
-                    theme: shikiTheme
-                });
+            // Apply Shiki Highlighting if available
+            if (shikiObj) {
+                try {
+                    const code = block.innerText.trim();
+                    const highlighted = await shikiObj.codeToHtml(code, {
+                        lang: lang,
+                        theme: shikiTheme
+                    });
 
-                // Create a temporary container to parse the HTML
-                const temp = document.createElement('div');
-                temp.innerHTML = highlighted;
-                const newPre = temp.querySelector('pre');
+                    const temp = document.createElement('div');
+                    temp.innerHTML = highlighted;
+                    const newPre = temp.querySelector('pre');
 
-                if (newPre) {
-                    // Transfer the highlighted content back
-                    block.innerHTML = newPre.querySelector('code').innerHTML;
+                    if (newPre) {
+                        const newCode = newPre.querySelector('code');
+                        block.innerHTML = newCode.innerHTML;
+                        // Copy classes from shiki-generated pre to the existing pre
+                        pre.style.backgroundColor = newPre.style.backgroundColor;
+                        if (isDark) pre.style.color = '#e1e4e8';
+                    }
+                } catch (e) {
+                    console.error('Shiki highlighting failed for block:', e);
                 }
-            } catch (e) {
-                console.error('Shiki highlighting failed:', e);
             }
 
             // Create Header Bar
             const header = document.createElement('div');
-            header.className = 'absolute right-4 top-4 flex items-center gap-3 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200';
+            header.className = 'absolute right-2 top-2 flex items-center gap-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200';
 
             // Language Label
             const langLabel = document.createElement('span');
-            langLabel.className = 'text-[10px] font-bold tracking-widest opacity-40 uppercase';
+            langLabel.className = 'text-[10px] font-bold tracking-widest opacity-40 uppercase pointer-events-none';
             langLabel.innerText = lang;
 
             // Copy Button
             const copyBtn = document.createElement('button');
-            copyBtn.className = 'btn btn-xs btn-ghost btn-square opacity-50 hover:opacity-100 hover:bg-base-content/10';
+            copyBtn.className = 'btn btn-xs btn-ghost btn-square hover:bg-base-content/10';
             copyBtn.innerHTML = '<i data-feather="copy" class="w-3 h-3"></i>';
             copyBtn.title = 'Copy Code';
 
-            copyBtn.addEventListener('click', () => {
+            copyBtn.addEventListener('click', (e) => {
+                e.preventDefault();
                 const text = block.innerText;
                 navigator.clipboard.writeText(text).then(() => {
                     const originalHTML = copyBtn.innerHTML;

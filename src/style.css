@@ -131,3 +131,18 @@ html {
   @apply bg-transparent! p-0! text-sm leading-relaxed;
   font-family: inherit;
 }
+
+/* Enhanced Code Block Shiki Compatibility */
+.prose pre.shiki {
+  @apply rounded-2xl border border-base-300;
+  padding: 1.5rem !important;
+}
+
+.prose pre.shiki code {
+  @apply text-sm leading-relaxed;
+}
+
+/* Ensure WP block-code doesn't override padding */
+.prose .wp-block-code {
+  @apply p-0 border-0 bg-transparent!;
+}
