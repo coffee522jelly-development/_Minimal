@@ -46,6 +46,10 @@
     ?>
 	<?php wp_head(); ?>
     <script src="https://unpkg.com/feather-icons"></script>
+    <script type="module">
+    import { codeToHtml } from 'https://esm.sh/shiki@1.0.0'
+    window.shiki = { codeToHtml };
+    </script>
     <style>
         :root {
             <?php

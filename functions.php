@@ -51,7 +51,10 @@ add_action( 'after_setup_theme', 'daisy_corp_setup' );
 
 function daisy_corp_scripts() {
 	wp_enqueue_style( 'daisy-corp-style', get_stylesheet_uri() );
-	wp_enqueue_style( 'daisy-corp-tailwind', get_template_directory_uri() . '/dist/output.css', array(), '1.0.0' );
+	wp_enqueue_style( 'daisy-corp-tailwind', get_template_directory_uri() . '/dist/output.css', array(), '1.0.1' );
+
+    // Code blocks enhancement script
+    wp_enqueue_script( 'daisy-corp-code-blocks', get_template_directory_uri() . '/js/code-blocks.js', array(), '1.0.1', true );
 }
 add_action( 'wp_enqueue_scripts', 'daisy_corp_scripts' );
 
