@@ -66,6 +66,10 @@
 
             font-size: <?php echo esc_html( get_theme_mod( 'daisy_corp_base_font_size', '16' ) ); ?>px !important;
         }
+        pre, code, .prose pre, .prose code {
+            background-color: <?php echo esc_html( get_theme_mod( 'daisy_corp_code_bg_color', '#1f2937' ) ); ?> !important;
+            color: <?php echo esc_html( get_theme_mod( 'daisy_corp_code_text_color', '#e5e7eb' ) ); ?> !important;
+        }
         body {
             <?php if ( ! empty( $font_stack ) ) : ?>
             font-family: <?php echo $font_stack; ?> !important;

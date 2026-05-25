@@ -313,6 +313,32 @@ function daisy_corp_customize_register( $wp_customize ) {
         'settings' => 'daisy_corp_secondary_color',
     ) ) );
 
+    // Code Block Background Color
+    $wp_customize->add_setting( 'daisy_corp_code_bg_color', array(
+        'default'   => '#1f2937', // Default dark gray
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'daisy_corp_code_bg_color', array(
+        'label'    => __( 'Code Block Background', 'daisy-corp' ),
+        'section'  => 'daisy_corp_theme_settings',
+        'settings' => 'daisy_corp_code_bg_color',
+    ) ) );
+
+    // Code Block Text Color
+    $wp_customize->add_setting( 'daisy_corp_code_text_color', array(
+        'default'   => '#e5e7eb', // Default light gray
+        'transport' => 'refresh',
+        'sanitize_callback' => 'sanitize_hex_color',
+    ) );
+
+    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'daisy_corp_code_text_color', array(
+        'label'    => __( 'Code Block Text', 'daisy-corp' ),
+        'section'  => 'daisy_corp_theme_settings',
+        'settings' => 'daisy_corp_code_text_color',
+    ) ) );
+
     // Excerpt Length
     $wp_customize->add_setting( 'daisy_corp_excerpt_length', array(
         'default'   => '40',

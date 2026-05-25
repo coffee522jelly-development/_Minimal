@@ -6,7 +6,6 @@
         const codeBlocks = document.querySelectorAll('pre code');
         if (codeBlocks.length === 0) return;
 
-        // Function to wait for shiki to be loaded
         const waitForShiki = () => {
             return new Promise((resolve, reject) => {
                 let attempts = 0;
@@ -38,23 +37,18 @@
 
         for (const block of codeBlocks) {
             const pre = block.parentElement;
-
-            // Container for relative positioning
             pre.classList.add('relative', 'group', 'overflow-visible');
 
-            // Detect Language
             let lang = 'text';
             const classes = Array.from(block.classList);
             const langClass = classes.find(c => c.startsWith('language-'));
             if (langClass) {
                 lang = langClass.replace('language-', '');
             } else if (pre.classList.contains('wp-block-code')) {
-                // Try to find lang in pre classes too (WordPress sometimes puts it there)
                 const preLangClass = Array.from(pre.classList).find(c => c.startsWith('language-'));
                 if (preLangClass) lang = preLangClass.replace('language-', '');
             }
 
-            // Apply Shiki Highlighting if available
             if (shikiObj) {
                 try {
                     const code = block.innerText.trim();
@@ -70,25 +64,21 @@
                     if (newPre) {
                         const newCode = newPre.querySelector('code');
                         block.innerHTML = newCode.innerHTML;
-                        // Copy classes from shiki-generated pre to the existing pre
-                        pre.style.backgroundColor = newPre.style.backgroundColor;
-                        if (isDark) pre.style.color = '#e1e4e8';
+                        // Do NOT override background or color here anymore,
+                        // as we handle it via dynamic CSS in header.php
                     }
                 } catch (e) {
                     console.error('Shiki highlighting failed for block:', e);
                 }
             }
 
-            // Create Header Bar
             const header = document.createElement('div');
             header.className = 'absolute right-2 top-2 flex items-center gap-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200';
 
-            // Language Label
             const langLabel = document.createElement('span');
             langLabel.className = 'text-[10px] font-bold tracking-widest opacity-40 uppercase pointer-events-none';
             langLabel.innerText = lang;
 
-            // Copy Button
             const copyBtn = document.createElement('button');
             copyBtn.className = 'btn btn-xs btn-ghost btn-square hover:bg-base-content/10';
             copyBtn.innerHTML = '<i data-feather="copy" class="w-3 h-3"></i>';
