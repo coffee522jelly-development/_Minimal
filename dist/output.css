@@ -3375,15 +3375,16 @@ html {
   border-color: var(--color-primary);
   padding-bottom: calc(var(--spacing) * 3);
 }
-.prose pre {
+.prose pre, .prose .wp-block-code pre, .prose pre.shiki {
   border-radius: var(--radius-2xl);
   border-style: var(--tw-border-style);
   border-width: 1px;
   border-color: var(--color-base-300);
-  background-color: var(--color-base-200) !important;
   padding: 1.5rem !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
 }
-.prose pre code {
+.prose pre code, .prose .wp-block-code code, .prose pre.shiki code {
   background-color: transparent !important;
   padding: calc(var(--spacing) * 0) !important;
   font-size: var(--text-sm);
@@ -3391,19 +3392,6 @@ html {
   --tw-leading: var(--leading-relaxed);
   line-height: var(--leading-relaxed);
   font-family: inherit;
-}
-.prose pre.shiki {
-  border-radius: var(--radius-2xl);
-  border-style: var(--tw-border-style);
-  border-width: 1px;
-  border-color: var(--color-base-300);
-  padding: 1.5rem !important;
-}
-.prose pre.shiki code {
-  font-size: var(--text-sm);
-  line-height: var(--tw-leading, var(--text-sm--line-height));
-  --tw-leading: var(--leading-relaxed);
-  line-height: var(--leading-relaxed);
 }
 .prose .wp-block-code {
   border-style: var(--tw-border-style);

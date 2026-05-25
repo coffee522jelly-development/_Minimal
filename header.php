@@ -66,7 +66,7 @@
 
             font-size: <?php echo esc_html( get_theme_mod( 'daisy_corp_base_font_size', '16' ) ); ?>px !important;
         }
-        pre, code, .prose pre, .prose code {
+        pre, code, .prose pre, .prose code, .prose .wp-block-code pre {
             background-color: <?php echo esc_html( get_theme_mod( 'daisy_corp_code_bg_color', '#1f2937' ) ); ?> !important;
             color: <?php echo esc_html( get_theme_mod( 'daisy_corp_code_text_color', '#e5e7eb' ) ); ?> !important;
         }
