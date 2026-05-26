@@ -136,7 +136,6 @@ html {
 .prose pre.shiki code,
 .prose .wp-block-code code {
   @apply p-0 text-sm leading-relaxed;
-  background-color: transparent !important;
   font-family: inherit;
 }
 
