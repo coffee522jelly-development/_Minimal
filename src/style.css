@@ -143,5 +143,4 @@ html {
 /* Clean up WordPress block wrapper */
 .prose .wp-block-code {
   @apply border-0 p-0;
-  background-color: transparent !important;
 }

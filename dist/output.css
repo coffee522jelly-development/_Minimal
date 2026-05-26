@@ -3396,7 +3396,6 @@ html {
   border-style: var(--tw-border-style);
   border-width: 0px;
   padding: calc(var(--spacing) * 0);
-  background-color: transparent !important;
 }
 @layer base {
   :where(:root),:root:has(input.theme-controller[value=light]:checked),[data-theme=light] {
