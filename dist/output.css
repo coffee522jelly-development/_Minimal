@@ -3375,7 +3375,7 @@ html {
   border-color: var(--color-primary);
   padding-bottom: calc(var(--spacing) * 3);
 }
-.prose pre, .prose pre.shiki {
+.prose pre, .prose pre.shiki, .prose .wp-block-code pre {
   border-radius: var(--radius-2xl);
   border-style: var(--tw-border-style);
   border-width: 1px;
@@ -3383,26 +3383,20 @@ html {
   padding: 1.5rem !important;
   margin: 1.5rem 0 !important;
 }
-.prose pre code, .prose pre.shiki code {
-  background-color: transparent;
+.prose pre code, .prose pre.shiki code, .prose .wp-block-code code {
   padding: calc(var(--spacing) * 0);
   font-size: var(--text-sm);
   line-height: var(--tw-leading, var(--text-sm--line-height));
   --tw-leading: var(--leading-relaxed);
   line-height: var(--leading-relaxed);
+  background-color: transparent !important;
   font-family: inherit;
 }
 .prose .wp-block-code {
   border-style: var(--tw-border-style);
   border-width: 0px;
-  background-image: none;
   padding: calc(var(--spacing) * 0);
-}
-.prose .wp-block-code pre {
-  border-radius: var(--radius-2xl);
-  border-style: var(--tw-border-style);
-  border-width: 1px;
-  border-color: var(--color-base-300);
+  background-color: transparent !important;
 }
 @layer base {
   :where(:root),:root:has(input.theme-controller[value=light]:checked),[data-theme=light] {

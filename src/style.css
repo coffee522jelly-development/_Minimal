@@ -121,26 +121,27 @@ html {
   @apply relative pb-3 mb-8 border-b-4 border-primary rounded-sm;
 }
 
-/* Code Block Customization - Optimized for Customizer Overrides */
+/* Code Block Customization */
+/* Standardize rounding and padding across all code block variants */
 .prose pre,
-.prose pre.shiki {
+.prose pre.shiki,
+.prose .wp-block-code pre {
   @apply rounded-2xl border border-base-300;
   padding: 1.5rem !important;
   margin: 1.5rem 0 !important;
 }
 
+/* Reset code element backgrounds. !important used here to ensure dynamic CSS from header.php takes final control */
 .prose pre code,
-.prose pre.shiki code {
-  @apply p-0 text-sm leading-relaxed bg-transparent;
+.prose pre.shiki code,
+.prose .wp-block-code code {
+  @apply p-0 text-sm leading-relaxed;
+  background-color: transparent !important;
   font-family: inherit;
 }
 
-/* Ensure WP block-code wrapper doesn't interfere. Removed bg-transparent! */
+/* Clean up WordPress block wrapper */
 .prose .wp-block-code {
-  @apply border-0 p-0 bg-none;
-}
-
-/* Re-apply rounded and border to the actual pre within wp-block-code */
-.prose .wp-block-code pre {
-  @apply rounded-2xl border border-base-300;
+  @apply border-0 p-0;
+  background-color: transparent !important;
 }
