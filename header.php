@@ -70,6 +70,9 @@
             background-color: <?php echo esc_html( get_theme_mod( 'daisy_corp_code_bg_color', '#1f2937' ) ); ?> !important;
             color: <?php echo esc_html( get_theme_mod( 'daisy_corp_code_text_color', '#e5e7eb' ) ); ?> !important;
         }
+        .mockup-code::before {
+            opacity: 0.8 !important;
+        }
         body {
             <?php if ( ! empty( $font_stack ) ) : ?>
             font-family: <?php echo $font_stack; ?> !important;

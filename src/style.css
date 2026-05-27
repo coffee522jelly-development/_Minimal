@@ -122,38 +122,39 @@ html {
 }
 
 /* Code Block Customization */
-/* Mockup Code styles - ensuring WP content plays nice with DaisyUI mockup */
+/* DaisyUI Mockup Support */
 .mockup-code {
-  @apply rounded-2xl border border-base-300 shadow-sm;
+  @apply rounded-2xl border border-base-300 shadow-lg;
+  /* Ensure the background color is correctly applied to the mockup container */
 }
 
+.mockup-code pre,
+.mockup-code .wp-block-code {
+  @apply bg-transparent m-0 p-0 border-0 rounded-none overflow-visible;
+}
+
+/* Reset for the nested code block elements inside mockup */
 .mockup-code pre {
-  @apply bg-transparent p-0 m-0 border-0 rounded-none;
   background-color: transparent !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
+  padding-right: 2rem !important;
 }
 
-.mockup-code pre code {
+.mockup-code code {
   @apply text-sm leading-relaxed block;
   font-family: inherit;
 }
 
-/* Base prose pre styling - used as fallback or before JS enhancement */
+/* Global Prose Reset - applies only if NOT inside a mockup */
 .prose pre:not(.mockup-code pre),
-.prose .wp-block-code pre:not(.mockup-code pre) {
+.prose .wp-block-code:not(.mockup-code *) pre {
   @apply rounded-2xl border border-base-300;
   padding: 1.5rem !important;
   margin: 1.5rem 0 !important;
 }
 
-/* Standardize rounding and padding across all code block variants */
-.prose pre code,
-.prose pre.shiki code,
-.prose .wp-block-code code {
-  @apply p-0 text-sm leading-relaxed;
-  font-family: inherit;
+/* Ensure language label/copy button don't overlap Mac dots */
+.mockup-code .absolute.right-4 {
+    @apply top-3.5;
 }
 
 /* Clean up WordPress block wrapper */

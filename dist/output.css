@@ -1533,8 +1533,8 @@
       isolation: isolate;
     }
   }
-  .z-20 {
-    z-index: 20;
+  .z-30 {
+    z-index: 30;
   }
   .z-50 {
     z-index: 50;
@@ -1569,14 +1569,11 @@
       max-width: 96rem;
     }
   }
-  .m-0 {
-    margin: calc(var(--spacing) * 0);
-  }
   .mx-auto {
     margin-inline: auto;
   }
-  .my-6 {
-    margin-block: calc(var(--spacing) * 6);
+  .my-8 {
+    margin-block: calc(var(--spacing) * 8);
   }
   .breadcrumbs {
     @layer daisyui.l1.l2.l3 {
@@ -2953,10 +2950,6 @@
     border-style: var(--tw-border-style);
     border-width: 1px;
   }
-  .border-0 {
-    border-style: var(--tw-border-style);
-    border-width: 0px;
-  }
   .border-x {
     border-inline-style: var(--tw-border-style);
     border-inline-width: 1px;
@@ -2988,9 +2981,6 @@
   }
   .bg-base-200 {
     background-color: var(--color-base-200);
-  }
-  .bg-transparent {
-    background-color: transparent;
   }
   .stroke-info {
     stroke: var(--color-info);
@@ -3102,12 +3092,6 @@
     & :where(a.btn:not(.btn-link)):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
       text-decoration-line: none;
     }
-  }
-  .opacity-0 {
-    opacity: 0%;
-  }
-  .opacity-40 {
-    opacity: 40%;
   }
   .opacity-50 {
     opacity: 50%;
@@ -3554,22 +3538,23 @@ html {
   border-style: var(--tw-border-style);
   border-width: 1px;
   border-color: var(--color-base-300);
-  --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+  --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
   box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
 }
-.mockup-code pre {
+.mockup-code pre, .mockup-code .wp-block-code {
   margin: calc(var(--spacing) * 0);
+  overflow: visible;
   border-radius: 0;
   border-style: var(--tw-border-style);
   border-width: 0px;
   background-color: transparent;
   padding: calc(var(--spacing) * 0);
-  background-color: transparent !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  border-radius: 0 !important;
 }
-.mockup-code pre code {
+.mockup-code pre {
+  background-color: transparent !important;
+  padding-right: 2rem !important;
+}
+.mockup-code code {
   display: block;
   font-size: var(--text-sm);
   line-height: var(--tw-leading, var(--text-sm--line-height));
@@ -3577,7 +3562,7 @@ html {
   line-height: var(--leading-relaxed);
   font-family: inherit;
 }
-.prose pre:not(.mockup-code pre), .prose .wp-block-code pre:not(.mockup-code pre) {
+.prose pre:not(.mockup-code pre), .prose .wp-block-code:not(.mockup-code *) pre {
   border-radius: var(--radius-2xl);
   border-style: var(--tw-border-style);
   border-width: 1px;
@@ -3585,13 +3570,8 @@ html {
   padding: 1.5rem !important;
   margin: 1.5rem 0 !important;
 }
-.prose pre code, .prose pre.shiki code, .prose .wp-block-code code {
-  padding: calc(var(--spacing) * 0);
-  font-size: var(--text-sm);
-  line-height: var(--tw-leading, var(--text-sm--line-height));
-  --tw-leading: var(--leading-relaxed);
-  line-height: var(--leading-relaxed);
-  font-family: inherit;
+.mockup-code .absolute.right-4 {
+  top: calc(var(--spacing) * 3.5);
 }
 .prose .wp-block-code {
   border-style: var(--tw-border-style);

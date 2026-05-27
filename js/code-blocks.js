@@ -38,32 +38,30 @@
 
         for (const block of codeBlocks) {
             const pre = block.parentElement;
+            const container = pre.parentElement.classList.contains('wp-block-code') ? pre.parentElement : pre;
+
+            // Language detection
+            let lang = 'text';
+            const classes = Array.from(block.classList).concat(Array.from(pre.classList)).concat(Array.from(container.classList));
+            const langClass = classes.find(c => c.startsWith('language-'));
+            if (langClass) {
+                lang = langClass.replace('language-', '');
+            }
 
             // Setup mockup wrapper
             const mockup = document.createElement('div');
-            mockup.className = 'mockup-code w-full my-6 group relative overflow-visible';
+            mockup.className = 'mockup-code w-full my-8 group relative';
 
-            // Move the pre inside the mockup
-            pre.parentNode.insertBefore(mockup, pre);
-            mockup.appendChild(pre);
+            // Move container/pre into mockup
+            container.parentNode.insertBefore(mockup, container);
+            mockup.appendChild(container);
 
             // Add prefix to pre for the "mockup" effect
             if (!pre.hasAttribute('data-prefix')) {
                 pre.setAttribute('data-prefix', '>');
             }
 
-            pre.classList.add('overflow-visible', 'bg-transparent', 'border-0', 'm-0', 'p-0');
-
-            let lang = 'text';
-            const classes = Array.from(block.classList);
-            const langClass = classes.find(c => c.startsWith('language-'));
-            if (langClass) {
-                lang = langClass.replace('language-', '');
-            } else if (pre.classList.contains('wp-block-code')) {
-                const preLangClass = Array.from(pre.classList).find(c => c.startsWith('language-'));
-                if (preLangClass) lang = preLangClass.replace('language-', '');
-            }
-
+            // Shiki highlighting
             if (shikiObj) {
                 try {
                     const code = block.innerText.trim();
@@ -85,12 +83,12 @@
                 }
             }
 
-            // Enhanced header for mockup look
+            // Metadata Header (Language label + Copy button)
             const header = document.createElement('div');
-            header.className = 'absolute right-4 top-3 flex items-center gap-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200';
+            header.className = 'absolute right-4 top-3 flex items-center gap-3 z-30 opacity-60 group-hover:opacity-100 transition-opacity duration-200';
 
             const langLabel = document.createElement('span');
-            langLabel.className = 'text-[10px] font-bold tracking-widest opacity-40 uppercase pointer-events-none';
+            langLabel.className = 'text-[10px] font-bold tracking-widest uppercase pointer-events-none opacity-50';
             langLabel.innerText = lang;
 
             const copyBtn = document.createElement('button');
