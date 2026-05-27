@@ -1,5 +1,6 @@
 /**
  * Code Block Enhancements: Syntax Highlighting with Shiki and Copy to Clipboard
+ * Now with DaisyUI mockup-code wrapper for a polished window look.
  */
 (function() {
     document.addEventListener('DOMContentLoaded', async () => {
@@ -37,7 +38,21 @@
 
         for (const block of codeBlocks) {
             const pre = block.parentElement;
-            pre.classList.add('relative', 'group', 'overflow-visible');
+
+            // Setup mockup wrapper
+            const mockup = document.createElement('div');
+            mockup.className = 'mockup-code w-full my-6 group relative overflow-visible';
+
+            // Move the pre inside the mockup
+            pre.parentNode.insertBefore(mockup, pre);
+            mockup.appendChild(pre);
+
+            // Add prefix to pre for the "mockup" effect
+            if (!pre.hasAttribute('data-prefix')) {
+                pre.setAttribute('data-prefix', '>');
+            }
+
+            pre.classList.add('overflow-visible', 'bg-transparent', 'border-0', 'm-0', 'p-0');
 
             let lang = 'text';
             const classes = Array.from(block.classList);
@@ -64,16 +79,15 @@
                     if (newPre) {
                         const newCode = newPre.querySelector('code');
                         block.innerHTML = newCode.innerHTML;
-                        // Do NOT override background or color here anymore,
-                        // as we handle it via dynamic CSS in header.php
                     }
                 } catch (e) {
                     console.error('Shiki highlighting failed for block:', e);
                 }
             }
 
+            // Enhanced header for mockup look
             const header = document.createElement('div');
-            header.className = 'absolute right-2 top-2 flex items-center gap-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200';
+            header.className = 'absolute right-4 top-3 flex items-center gap-3 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200';
 
             const langLabel = document.createElement('span');
             langLabel.className = 'text-[10px] font-bold tracking-widest opacity-40 uppercase pointer-events-none';
@@ -100,7 +114,7 @@
 
             header.appendChild(langLabel);
             header.appendChild(copyBtn);
-            pre.appendChild(header);
+            mockup.appendChild(header);
         }
 
         if (window.feather) feather.replace();

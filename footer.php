@@ -20,6 +20,36 @@
   <?php endif; ?>
 </footer>
 
+<?php if ( get_theme_mod( 'daisy_corp_enable_fab', false ) ) : ?>
+<div class="fab">
+  <!-- Speed Dial Actions (displayed on hover/focus) -->
+  <?php for ( $i = 3; $i >= 1; $i-- ) :
+    $label = get_theme_mod( "daisy_corp_fab_label_$i" );
+    $url   = get_theme_mod( "daisy_corp_fab_url_$i" );
+    $icon  = get_theme_mod( "daisy_corp_fab_icon_$i", 'link' );
+    if ( ! empty( $url ) ) :
+  ?>
+    <a href="<?php echo esc_url( $url ); ?>" class="flex items-center gap-3">
+        <?php if ( ! empty( $label ) ) : ?>
+            <span class="fab-label"><?php echo esc_html( $label ); ?></span>
+        <?php endif; ?>
+        <button class="btn btn-circle btn-secondary shadow-md"><i data-feather="<?php echo esc_attr( $icon ); ?>"></i></button>
+    </a>
+  <?php endif; endfor; ?>
+
+  <!-- Trigger Button (Back to Top by default) -->
+  <div tabindex="0" role="button" class="btn btn-lg btn-circle btn-primary shadow-xl">
+    <i data-feather="plus"></i>
+  </div>
+
+  <!-- Close/Main Action button replaces the trigger when open -->
+  <div class="fab-main-action">
+    <button class="btn btn-circle btn-primary btn-lg shadow-xl" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        <i data-feather="chevron-up"></i>
+    </button>
+  </div>
+</div>
+<?php else : ?>
 <button
   onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
   class="btn btn-primary btn-circle fixed bottom-6 right-6 shadow-lg z-[100] md:hidden"
@@ -27,6 +57,7 @@
 >
   <i data-feather="chevron-up"></i>
 </button>
+<?php endif; ?>
 
 <?php wp_footer(); ?>
 <script>
