@@ -164,7 +164,7 @@ html {
 
 /* FAB Speed Dial Styling */
 .fab {
-  @apply fixed bottom-6 right-6 z-[100] flex flex-col items-end gap-3;
+  @apply fixed bottom-24 right-6 z-[100] flex flex-col items-end gap-3;
 }
 
 .fab > div:not(.btn):not(.fab-main-action), .fab > a {

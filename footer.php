@@ -22,7 +22,30 @@
 
 <?php if ( get_theme_mod( 'daisy_corp_enable_fab', false ) ) : ?>
 <div class="fab">
-  <!-- Speed Dial Actions (displayed on hover/focus) -->
+  <!-- Speed Dial Actions (Dynamic Page Links) -->
+  <?php
+    $fab_pages = get_pages( array(
+        'parent'  => 0,
+        'number'  => 5,
+        'sort_column' => 'menu_order',
+    ) );
+
+    foreach ( $fab_pages as $fab_page ) :
+        $page_icon = 'file-text';
+        $page_title = strtolower($fab_page->post_title);
+
+        if (strpos($page_title, 'contact') !== false) $page_icon = 'mail';
+        elseif (strpos($page_title, 'about') !== false) $page_icon = 'info';
+        elseif (strpos($page_title, 'service') !== false) $page_icon = 'briefcase';
+        elseif (strpos($page_title, 'blog') !== false) $page_icon = 'edit-3';
+  ?>
+    <a href="<?php echo esc_url( get_permalink($fab_page->ID) ); ?>" class="flex items-center gap-3">
+        <span class="fab-label"><?php echo esc_html( $fab_page->post_title ); ?></span>
+        <button class="btn btn-circle btn-secondary shadow-md"><i data-feather="<?php echo esc_attr( $page_icon ); ?>"></i></button>
+    </a>
+  <?php endforeach; ?>
+
+  <!-- Manual Customizer Actions -->
   <?php for ( $i = 3; $i >= 1; $i-- ) :
     $label = get_theme_mod( "daisy_corp_fab_label_$i" );
     $url   = get_theme_mod( "daisy_corp_fab_url_$i" );
@@ -37,19 +60,20 @@
     </a>
   <?php endif; endfor; ?>
 
-  <!-- Trigger Button (Back to Top by default) -->
+  <!-- Trigger Button -->
   <div tabindex="0" role="button" class="btn btn-lg btn-circle btn-primary shadow-xl">
-    <i data-feather="plus"></i>
+    <i data-feather="grid"></i>
   </div>
 
-  <!-- Close/Main Action button replaces the trigger when open -->
+  <!-- Close Action -->
   <div class="fab-main-action">
-    <button class="btn btn-circle btn-primary btn-lg shadow-xl" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
-        <i data-feather="chevron-up"></i>
+    <button class="btn btn-circle btn-primary btn-lg shadow-xl">
+        <i data-feather="x"></i>
     </button>
   </div>
 </div>
-<?php else : ?>
+<?php endif; ?>
+
 <button
   onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
   class="btn btn-primary btn-circle fixed bottom-6 right-6 shadow-lg z-[100] md:hidden"
@@ -57,7 +81,6 @@
 >
   <i data-feather="chevron-up"></i>
 </button>
-<?php endif; ?>
 
 <?php wp_footer(); ?>
 <script>
