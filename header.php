@@ -68,7 +68,7 @@
         }
         pre, code, .prose pre, .prose code, .prose .wp-block-code pre {
             background-color: <?php echo esc_html( get_theme_mod( 'daisy_corp_code_bg_color', '#1f2937' ) ); ?> !important;
-            color: <?php echo esc_html( get_theme_mod( 'daisy_corp_code_text_color', '#e5e7eb' ) ); ?> !important;
+            color: <?php echo esc_html( get_theme_mod( 'daisy_corp_code_text_color', '#e5e7eb' ) ); ?>;
         }
         .mockup-code::before {
             opacity: 0.8 !important;

@@ -517,57 +517,8 @@ function daisy_corp_customize_register( $wp_customize ) {
             'oswald'     => 'Oswald (Display)',
         ),
     ) );
-
-    // FAB Speed Dial Section
-    $wp_customize->add_section( 'daisy_corp_fab_section', array(
-		'title'    => __( 'FAB Speed Dial', 'daisy-corp' ),
-		'priority' => 100,
-	) );
-
-    $wp_customize->add_setting( 'daisy_corp_enable_fab', array(
-		'default'           => false,
-		'sanitize_callback' => 'daisy_corp_sanitize_checkbox',
-	) );
-
-	$wp_customize->add_control( 'daisy_corp_enable_fab', array(
-		'label'    => __( 'Enable FAB Speed Dial', 'daisy-corp' ),
-		'section'  => 'daisy_corp_fab_section',
-		'type'     => 'checkbox',
-	) );
-
-    for ( $i = 1; $i <= 3; $i++ ) {
-        $wp_customize->add_setting( "daisy_corp_fab_label_$i", array(
-            'default'           => '',
-            'sanitize_callback' => 'sanitize_text_field',
-        ) );
-        $wp_customize->add_control( "daisy_corp_fab_label_$i", array(
-            'label'    => sprintf( __( 'Action %d Label', 'daisy-corp' ), $i ),
-            'section'  => 'daisy_corp_fab_section',
-            'type'     => 'text',
-        ) );
-
-        $wp_customize->add_setting( "daisy_corp_fab_url_$i", array(
-            'default'           => '',
-            'sanitize_callback' => 'esc_url_raw',
-        ) );
-        $wp_customize->add_control( "daisy_corp_fab_url_$i", array(
-            'label'    => sprintf( __( 'Action %d URL', 'daisy-corp' ), $i ),
-            'section'  => 'daisy_corp_fab_section',
-            'type'     => 'text',
-        ) );
-
-        $wp_customize->add_setting( "daisy_corp_fab_icon_$i", array(
-            'default'           => 'link',
-            'sanitize_callback' => 'sanitize_text_field',
-        ) );
-        $wp_customize->add_control( "daisy_corp_fab_icon_$i", array(
-            'label'    => sprintf( __( 'Action %d Feather Icon', 'daisy-corp' ), $i ),
-            'section'  => 'daisy_corp_fab_section',
-            'type'     => 'text',
-            'description' => 'e.g., mail, phone, tag, star'
-        ) );
-    }
 }
+
 add_action( 'customize_register', 'daisy_corp_customize_register' );
 
 function daisy_corp_sanitize_menu_position( $input ) {
