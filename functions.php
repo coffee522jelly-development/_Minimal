@@ -20,6 +20,7 @@ if ( ! function_exists( 'daisy_corp_setup' ) ) :
 		) );
 	}
 endif;
+add_action( 'after_setup_theme', 'daisy_corp_setup' );
 
 /**
  * Custom Nav Walker for DaisyUI Dropdowns
@@ -47,7 +48,6 @@ class Daisy_Corp_Walker_Nav_Menu extends Walker_Nav_Menu {
         $output .= '</a>';
     }
 }
-add_action( 'after_setup_theme', 'daisy_corp_setup' );
 
 function daisy_corp_scripts() {
 	wp_enqueue_style( 'daisy-corp-style', get_stylesheet_uri() );
@@ -69,62 +69,69 @@ function daisy_corp_widgets_init() {
 		'after_title'   => '</h2>',
 	) );
 
-    register_sidebar( array(
-		'name'          => esc_html__( 'Footer Column 1', 'daisy-corp' ),
-		'id'            => 'footer-1',
-		'description'   => esc_html__( 'Add widgets here for the first footer column.', 'daisy-corp' ),
-		'before_widget' => '<nav class="footer-widget-nav">',
-		'after_widget'  => '</nav>',
-		'before_title'  => '<h6 class="footer-title">',
-		'after_title'   => '</h6>',
-	) );
-
-    register_sidebar( array(
-		'name'          => esc_html__( 'Footer Column 2', 'daisy-corp' ),
-		'id'            => 'footer-2',
-		'description'   => esc_html__( 'Add widgets here for the second footer column.', 'daisy-corp' ),
-		'before_widget' => '<nav class="footer-widget-nav">',
-		'after_widget'  => '</nav>',
-		'before_title'  => '<h6 class="footer-title">',
-		'after_title'   => '</h6>',
-	) );
-
-    register_sidebar( array(
-		'name'          => esc_html__( 'Footer Column 3', 'daisy-corp' ),
-		'id'            => 'footer-3',
-		'description'   => esc_html__( 'Add widgets here for the third footer column.', 'daisy-corp' ),
-		'before_widget' => '<nav class="footer-widget-nav">',
-		'after_widget'  => '</nav>',
-		'before_title'  => '<h6 class="footer-title">',
-		'after_title'   => '</h6>',
-	) );
+    // Register footer sidebars
+    for ( $i = 1; $i <= 3; $i++ ) {
+        register_sidebar( array(
+            'name'          => sprintf( esc_html__( 'Footer Column %d', 'daisy-corp' ), $i ),
+            'id'            => "footer-$i",
+            'description'   => sprintf( esc_html__( 'Add widgets here for footer column %d.', 'daisy-corp' ), $i ),
+            'before_widget' => '<nav class="footer-widget-nav">',
+            'after_widget'  => '</nav>',
+            'before_title'  => '<h6 class="footer-title">',
+            'after_title'   => '</h6>',
+        ) );
+    }
 }
 add_action( 'widgets_init', 'daisy_corp_widgets_init' );
 
 /**
- * Recursive function to build category tree with DaisyUI menu classes
- * Specifically limited to 3 levels of depth.
+ * Layout helper to get grid configuration
+ */
+function daisy_corp_get_layout_config() {
+    $sidebar_pos = get_theme_mod( 'daisy_corp_sidebar_position', 'right' );
+    $hide_sidebar = false;
+
+    if ( is_singular() ) {
+        $hide_sidebar = get_theme_mod( 'daisy_corp_hide_sidebar_single', false );
+    }
+
+    $blog_cols = get_theme_mod( 'daisy_corp_blog_columns', '2' );
+    $grid_cols_class = 'grid-cols-1';
+    if ( '2' === $blog_cols ) {
+        $grid_cols_class = 'grid-cols-1 sm:grid-cols-2';
+    } elseif ( '4' === $blog_cols ) {
+        $grid_cols_class = 'grid-cols-1 sm:grid-cols-2 xl:grid-cols-4';
+    }
+
+    return array(
+        'sidebar_pos'     => $sidebar_pos,
+        'hide_sidebar'    => $hide_sidebar,
+        'main_order'      => ( 'left' === $sidebar_pos ) ? 'order-2' : 'order-1',
+        'sidebar_order'   => ( 'left' === $sidebar_pos ) ? 'order-1' : 'order-2',
+        'main_cols_class' => $hide_sidebar ? 'lg:col-span-4' : 'lg:col-span-3',
+        'grid_gap_class'  => $hide_sidebar ? '' : 'lg:gap-16',
+        'blog_grid_class' => $grid_cols_class,
+    );
+}
+
+/**
+ * Recursive function to build category tree
  */
 function daisy_corp_get_category_tree( $parent_id = 0, $depth = 1 ) {
-    if ( $depth > 3 ) {
-        return '';
-    }
+    if ( $depth > 3 ) return '';
 
     $categories = get_categories( array(
         'parent' => $parent_id,
         'hide_empty' => false,
     ) );
 
-    if ( empty( $categories ) ) {
-        return '';
-    }
+    if ( empty( $categories ) ) return '';
 
     $output = '';
     foreach ( $categories as $category ) {
         $children = daisy_corp_get_category_tree( $category->term_id, $depth + 1 );
         $output .= '<li>';
-        $count = $category->count;
-        $count_badge = '<span class="badge badge-sm badge-outline opacity-50">' . $count . '</span>';
+        $count_badge = '<span class="badge badge-sm badge-outline opacity-50">' . $category->count . '</span>';
 
         if ( ! empty( $children ) ) {
             $output .= '<details open>';
@@ -136,20 +143,15 @@ function daisy_corp_get_category_tree( $parent_id = 0, $depth = 1 ) {
         }
         $output .= '</li>';
     }
-
     return $output;
 }
 
 /**
- * Category Tree Widget Class
+ * Category Tree Widget
  */
 class Daisy_Corp_Category_Tree_Widget extends WP_Widget {
     public function __construct() {
-        parent::__construct(
-            'daisy_corp_category_tree',
-            __( 'Daisy Corp Category Tree', 'daisy-corp' ),
-            array( 'description' => __( 'Displays a 3-level hierarchical category tree.', 'daisy-corp' ) )
-        );
+        parent::__construct( 'daisy_corp_category_tree', __( 'Daisy Corp Category Tree', 'daisy-corp' ) );
     }
 
     public function widget( $args, $instance ) {
@@ -157,540 +159,138 @@ class Daisy_Corp_Category_Tree_Widget extends WP_Widget {
         if ( ! empty( $instance['title'] ) ) {
             echo $args['before_title'] . apply_filters( 'widget_title', $instance['title'] ) . $args['after_title'];
         }
-
         $tree = daisy_corp_get_category_tree();
         if ( ! empty( $tree ) ) {
             echo '<ul class="menu bg-base-200 w-full rounded-box">' . $tree . '</ul>';
         } else {
             echo '<p>' . esc_html__( 'No categories found.', 'daisy-corp' ) . '</p>';
         }
-
         echo $args['after_widget'];
     }
 
     public function form( $instance ) {
         $title = ! empty( $instance['title'] ) ? $instance['title'] : __( 'Categories', 'daisy-corp' );
-        ?>
-        <p>
-            <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label>
-            <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>">
-        </p>
-        <?php
+        echo '<p><label for="' . $this->get_field_id( 'title' ) . '">' . __( 'Title:' ) . '</label>';
+        echo '<input class="widefat" id="' . $this->get_field_id( 'title' ) . '" name="' . $this->get_field_name( 'title' ) . '" type="text" value="' . esc_attr( $title ) . '"></p>';
     }
 
     public function update( $new_instance, $old_instance ) {
-        $instance = array();
-        $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
-        return $instance;
+        return array( 'title' => ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '' );
     }
 }
+add_action( 'widgets_init', function() { register_widget( 'Daisy_Corp_Category_Tree_Widget' ); } );
 
-function daisy_corp_register_widgets() {
-    register_widget( 'Daisy_Corp_Category_Tree_Widget' );
-}
-add_action( 'widgets_init', 'daisy_corp_register_widgets' );
-
-/**
- * Category Tree Shortcode
- */
 function daisy_corp_category_tree_shortcode() {
     $tree = daisy_corp_get_category_tree();
-    if ( empty( $tree ) ) {
-        return '<p>' . esc_html__( 'No categories found.', 'daisy-corp' ) . '</p>';
-    }
+    if ( empty( $tree ) ) return '<p>' . esc_html__( 'No categories found.', 'daisy-corp' ) . '</p>';
     return '<div class="daisy-corp-category-tree"><ul class="menu bg-base-200 w-full rounded-box">' . $tree . '</ul></div>';
 }
 add_shortcode( 'category_tree', 'daisy_corp_category_tree_shortcode' );
 
 /**
- * Filter comment form fields to add DaisyUI classes
+ * Filter comment form fields
  */
 function daisy_corp_comment_form_fields( $fields ) {
     foreach( $fields as $key => $field ) {
-        $fields[$key] = str_replace( '<input', '<input class="input input-bordered w-full"', $field );
-        $fields[$key] = str_replace( '<textarea', '<textarea class="textarea textarea-bordered w-full"', $field );
+        $fields[$key] = str_replace( array('<input', '<textarea'), array('<input class="input input-bordered w-full"', '<textarea class="textarea textarea-bordered w-full"'), $field );
     }
     return $fields;
 }
 add_filter( 'comment_form_default_fields', 'daisy_corp_comment_form_fields' );
 
-function daisy_corp_comment_form_textarea( $field ) {
+add_filter( 'comment_form_field_comment', function( $field ) {
     return str_replace( '<textarea', '<textarea class="textarea textarea-bordered w-full"', $field );
-}
-add_filter( 'comment_form_field_comment', 'daisy_corp_comment_form_textarea' );
+} );
 
-function daisy_corp_comment_form_submit_button( $submit_button ) {
+add_filter( 'comment_form_submit_button', function( $submit_button ) {
     return str_replace( 'class="submit"', 'class="submit btn btn-primary"', $submit_button );
-}
-add_filter( 'comment_form_submit_button', 'daisy_corp_comment_form_submit_button' );
+} );
 
 /**
- * Theme Customizer settings
+ * Customizer settings
  */
 function daisy_corp_customize_register( $wp_customize ) {
-    $wp_customize->add_section( 'daisy_corp_theme_settings', array(
-        'title'    => __( 'Theme Settings', 'daisy-corp' ),
-        'priority' => 30,
-    ) );
+    $wp_customize->add_section( 'daisy_corp_theme_settings', array( 'title' => __( 'Theme Settings', 'daisy-corp' ), 'priority' => 30 ) );
 
-    $wp_customize->add_setting( 'daisy_corp_menu_position', array(
-        'default'   => 'center',
-        'transport' => 'refresh',
-        'sanitize_callback' => 'daisy_corp_sanitize_menu_position',
-    ) );
+    $settings = array(
+        'daisy_corp_menu_position'      => array( 'default' => 'center', 'type' => 'radio', 'choices' => array( 'center' => 'Center', 'right' => 'Right' ) ),
+        'daisy_corp_sidebar_position'   => array( 'default' => 'right',  'type' => 'radio', 'choices' => array( 'left' => 'Left', 'right' => 'Right' ) ),
+        'daisy_corp_blog_columns'       => array( 'default' => '2',      'type' => 'select', 'choices' => array( '1' => '1 Column', '2' => '2 Columns', '4' => '4 Columns' ) ),
+        'daisy_corp_daisyui_theme'      => array( 'default' => 'light',  'type' => 'select', 'choices' => array_combine(array('light','dark','cupcake','bumblebee','emerald','corporate','synthwave','retro','cyberpunk','valentine','halloween','garden','forest','aqua','lofi','pastel','fantasy','wireframe','black','luxury','dracula','cmyk','autumn','business','acid','lemonade','night','coffee','winter','dim','nord','sunset'), array_map('ucfirst', array('light','dark','cupcake','bumblebee','emerald','corporate','synthwave','retro','cyberpunk','valentine','halloween','garden','forest','aqua','lofi','pastel','fantasy','wireframe','black','luxury','dracula','cmyk','autumn','business','acid','lemonade','night','coffee','winter','dim','nord','sunset'))) ),
+        'daisy_corp_hide_sidebar_single'=> array( 'default' => false,    'type' => 'checkbox' ),
+    );
 
-    $wp_customize->add_control( 'daisy_corp_menu_position', array(
-        'label'      => __( 'Menu Position', 'daisy-corp' ),
-        'section'    => 'daisy_corp_theme_settings',
-        'settings'   => 'daisy_corp_menu_position',
-        'type'       => 'radio',
-        'choices'    => array(
-            'center' => __( 'Center', 'daisy-corp' ),
-            'right'  => __( 'Right', 'daisy-corp' ),
-        ),
-    ) );
+    foreach ( $settings as $id => $args ) {
+        $wp_customize->add_setting( $id, array( 'default' => $args['default'], 'sanitize_callback' => (is_bool($args['default']) ? 'daisy_corp_sanitize_checkbox' : 'sanitize_text_field') ) );
+        $wp_customize->add_control( $id, array( 'label' => ucwords(str_replace('_', ' ', str_replace('daisy_corp_', '', $id))), 'section' => 'daisy_corp_theme_settings', 'type' => $args['type'], 'choices' => isset($args['choices']) ? $args['choices'] : null ) );
+    }
 
-    // Sidebar Position
-    $wp_customize->add_setting( 'daisy_corp_sidebar_position', array(
-        'default'   => 'right',
-        'transport' => 'refresh',
-        'sanitize_callback' => 'daisy_corp_sanitize_sidebar_position',
-    ) );
+    // Colors
+    $colors = array(
+        'daisy_corp_primary_color'   => '#3b82f6',
+        'daisy_corp_secondary_color' => '#64748b',
+        'daisy_corp_code_bg_color'   => '#1f2937',
+        'daisy_corp_code_text_color' => '#e5e7eb',
+    );
+    foreach ( $colors as $id => $default ) {
+        $wp_customize->add_setting( $id, array( 'default' => $default, 'sanitize_callback' => 'sanitize_hex_color' ) );
+        $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, $id, array( 'label' => ucwords(str_replace('_', ' ', str_replace('daisy_corp_', '', $id))), 'section' => 'daisy_corp_theme_settings' ) ) );
+    }
 
-    $wp_customize->add_control( 'daisy_corp_sidebar_position', array(
-        'label'      => __( 'Sidebar Position', 'daisy-corp' ),
-        'section'    => 'daisy_corp_theme_settings',
-        'settings'   => 'daisy_corp_sidebar_position',
-        'type'       => 'radio',
-        'choices'    => array(
-            'left'  => __( 'Left', 'daisy-corp' ),
-            'right' => __( 'Right', 'daisy-corp' ),
-        ),
-    ) );
+    // Other inputs
+    $wp_customize->add_setting( 'daisy_corp_excerpt_length', array( 'default' => 40, 'sanitize_callback' => 'absint' ) );
+    $wp_customize->add_control( 'daisy_corp_excerpt_length', array( 'label' => 'Excerpt Length', 'section' => 'daisy_corp_theme_settings', 'type' => 'number' ) );
 
-    // Blog Columns
-    $wp_customize->add_setting( 'daisy_corp_blog_columns', array(
-        'default'   => '2',
-        'transport' => 'refresh',
-        'sanitize_callback' => 'daisy_corp_sanitize_blog_columns',
-    ) );
+    $wp_customize->add_setting( 'daisy_corp_base_font_size', array( 'default' => 16, 'sanitize_callback' => 'absint' ) );
+    $wp_customize->add_control( 'daisy_corp_base_font_size', array( 'label' => 'Base Font Size', 'section' => 'daisy_corp_theme_settings', 'type' => 'number' ) );
 
-    $wp_customize->add_control( 'daisy_corp_blog_columns', array(
-        'label'      => __( 'Blog Grid Columns', 'daisy-corp' ),
-        'section'    => 'daisy_corp_theme_settings',
-        'settings'   => 'daisy_corp_blog_columns',
-        'type'       => 'select',
-        'choices'    => array(
-            '1' => __( '1 Column', 'daisy-corp' ),
-            '2' => __( '2 Columns', 'daisy-corp' ),
-            '4' => __( '4 Columns', 'daisy-corp' ),
-        ),
-    ) );
-
-    // Primary Color
-    $wp_customize->add_setting( 'daisy_corp_primary_color', array(
-        'default'   => '#3b82f6', // Default primary color
-        'transport' => 'refresh',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ) );
-
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'daisy_corp_primary_color', array(
-        'label'    => __( 'Primary Color', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_primary_color',
-    ) ) );
-
-    // Secondary Color
-    $wp_customize->add_setting( 'daisy_corp_secondary_color', array(
-        'default'   => '#64748b', // Default secondary color
-        'transport' => 'refresh',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ) );
-
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'daisy_corp_secondary_color', array(
-        'label'    => __( 'Secondary Color', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_secondary_color',
-    ) ) );
-
-    // Code Block Background Color
-    $wp_customize->add_setting( 'daisy_corp_code_bg_color', array(
-        'default'   => '#1f2937', // Default dark gray
-        'transport' => 'refresh',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ) );
-
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'daisy_corp_code_bg_color', array(
-        'label'    => __( 'Code Block Background', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_code_bg_color',
-    ) ) );
-
-    // Code Block Text Color
-    $wp_customize->add_setting( 'daisy_corp_code_text_color', array(
-        'default'   => '#e5e7eb', // Default light gray
-        'transport' => 'refresh',
-        'sanitize_callback' => 'sanitize_hex_color',
-    ) );
-
-    $wp_customize->add_control( new WP_Customize_Color_Control( $wp_customize, 'daisy_corp_code_text_color', array(
-        'label'    => __( 'Code Block Text', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_code_text_color',
-    ) ) );
-
-    // Excerpt Length
-    $wp_customize->add_setting( 'daisy_corp_excerpt_length', array(
-        'default'   => '40',
-        'transport' => 'refresh',
-        'sanitize_callback' => 'absint',
-    ) );
-
-    $wp_customize->add_control( 'daisy_corp_excerpt_length', array(
-        'label'      => __( 'Excerpt Length (Words)', 'daisy-corp' ),
-        'section'    => 'daisy_corp_theme_settings',
-        'settings'   => 'daisy_corp_excerpt_length',
-        'type'       => 'number',
-        'input_attrs' => array(
-            'min'  => 10,
-            'max'  => 200,
-            'step' => 5,
-        ),
-    ) );
-
-    // DaisyUI Theme Selector
-    $wp_customize->add_setting( 'daisy_corp_daisyui_theme', array(
-        'default'   => 'light',
-        'transport' => 'refresh',
-        'sanitize_callback' => 'daisy_corp_sanitize_daisyui_theme',
-    ) );
-
-    $wp_customize->add_control( 'daisy_corp_daisyui_theme', array(
-        'label'    => __( 'DaisyUI Theme', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_daisyui_theme',
-        'type'     => 'select',
-        'choices'  => array(
-            'light' => 'Light',
-            'dark' => 'Dark',
-            'cupcake' => 'Cupcake',
-            'bumblebee' => 'Bumblebee',
-            'emerald' => 'Emerald',
-            'corporate' => 'Corporate',
-            'synthwave' => 'Synthwave',
-            'retro' => 'Retro',
-            'cyberpunk' => 'Cyberpunk',
-            'valentine' => 'Valentine',
-            'halloween' => 'Halloween',
-            'garden' => 'Garden',
-            'forest' => 'Forest',
-            'aqua' => 'Aqua',
-            'lofi' => 'Lo-fi',
-            'pastel' => 'Pastel',
-            'fantasy' => 'Fantasy',
-            'wireframe' => 'Wireframe',
-            'black' => 'Black',
-            'luxury' => 'Luxury',
-            'dracula' => 'Dracula',
-            'cmyk' => 'CMYK',
-            'autumn' => 'Autumn',
-            'business' => 'Business',
-            'acid' => 'Acid',
-            'lemonade' => 'Lemonade',
-            'night' => 'Night',
-            'coffee' => 'Coffee',
-            'winter' => 'Winter',
-            'dim' => 'Dim',
-            'nord' => 'Nord',
-            'sunset' => 'Sunset',
-        ),
-    ) );
-
-    // Hide Sidebar on Single/Page
-    $wp_customize->add_setting( 'daisy_corp_hide_sidebar_single', array(
-        'default'   => false,
-        'transport' => 'refresh',
-        'sanitize_callback' => 'daisy_corp_sanitize_checkbox',
-    ) );
-
-    $wp_customize->add_control( 'daisy_corp_hide_sidebar_single', array(
-        'label'    => __( 'Hide Sidebar on Single Posts & Pages', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_hide_sidebar_single',
-        'type'     => 'checkbox',
-    ) );
-
-    // Read More Text
-    $wp_customize->add_setting( 'daisy_corp_read_more_text', array(
-        'default'   => __( 'Read More', 'daisy-corp' ),
-        'transport' => 'refresh',
-        'sanitize_callback' => 'sanitize_text_field',
-    ) );
-
-    $wp_customize->add_control( 'daisy_corp_read_more_text', array(
-        'label'    => __( 'Read More Button Text', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_read_more_text',
-        'type'     => 'text',
-    ) );
-
-    // TOC Title
-    $wp_customize->add_setting( 'daisy_corp_toc_title', array(
-        'default'   => __( 'Table of Contents', 'daisy-corp' ),
-        'transport' => 'refresh',
-        'sanitize_callback' => 'sanitize_text_field',
-    ) );
-
-    $wp_customize->add_control( 'daisy_corp_toc_title', array(
-        'label'    => __( 'Table of Contents Title', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_toc_title',
-        'type'     => 'text',
-    ) );
-
-    // Contact URL
-    $wp_customize->add_setting( 'daisy_corp_contact_url', array(
-        'default'   => '/contact',
-        'transport' => 'refresh',
-        'sanitize_callback' => 'esc_url_raw',
-    ) );
-
-    $wp_customize->add_control( 'daisy_corp_contact_url', array(
-        'label'    => __( 'Contact Button URL', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_contact_url',
-        'type'     => 'text',
-    ) );
-
-    // Contact Text
-    $wp_customize->add_setting( 'daisy_corp_contact_text', array(
-        'default'   => __( 'Contact', 'daisy-corp' ),
-        'transport' => 'refresh',
-        'sanitize_callback' => 'sanitize_text_field',
-    ) );
-
-    $wp_customize->add_control( 'daisy_corp_contact_text', array(
-        'label'    => __( 'Contact Button Text', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_contact_text',
-        'type'     => 'text',
-    ) );
-
-    // Base Font Size
-    $wp_customize->add_setting( 'daisy_corp_base_font_size', array(
-        'default'   => '16',
-        'transport' => 'refresh',
-        'sanitize_callback' => 'absint',
-    ) );
-
-    $wp_customize->add_control( 'daisy_corp_base_font_size', array(
-        'label'      => __( 'Base Font Size (px)', 'daisy-corp' ),
-        'section'    => 'daisy_corp_theme_settings',
-        'settings'   => 'daisy_corp_base_font_size',
-        'type'       => 'number',
-        'input_attrs' => array(
-            'min'  => 12,
-            'max'  => 24,
-            'step' => 1,
-        ),
-    ) );
-
-    // Web Font
-    $wp_customize->add_setting( 'daisy_corp_web_font', array(
-        'default'   => 'sans-serif',
-        'transport' => 'refresh',
-        'sanitize_callback' => 'daisy_corp_sanitize_web_font',
-    ) );
-
-    $wp_customize->add_control( 'daisy_corp_web_font', array(
-        'label'    => __( 'Theme Font Family', 'daisy-corp' ),
-        'section'  => 'daisy_corp_theme_settings',
-        'settings' => 'daisy_corp_web_font',
-        'type'     => 'select',
-        'choices'  => array(
-            'sans-serif' => 'System Sans-Serif',
-            'inter'      => 'Inter (Sans-Serif)',
-            'noto-sans'  => 'Noto Sans JP (Japanese Sans-Serif)',
-            'noto-serif' => 'Noto Serif JP (Japanese Serif)',
-            'roboto'     => 'Roboto',
-            'merriweather' => 'Merriweather (Serif)',
-            'oswald'     => 'Oswald (Display)',
-        ),
-    ) );
+    $wp_customize->add_setting( 'daisy_corp_web_font', array( 'default' => 'sans-serif', 'sanitize_callback' => 'sanitize_text_field' ) );
+    $wp_customize->add_control( 'daisy_corp_web_font', array( 'label' => 'Font Family', 'section' => 'daisy_corp_theme_settings', 'type' => 'select', 'choices' => array( 'sans-serif' => 'System', 'inter' => 'Inter', 'noto-sans' => 'Noto Sans JP', 'noto-serif' => 'Noto Serif JP', 'roboto' => 'Roboto', 'merriweather' => 'Merriweather', 'oswald' => 'Oswald' ) ) );
 }
-
 add_action( 'customize_register', 'daisy_corp_customize_register' );
 
-function daisy_corp_sanitize_menu_position( $input ) {
-    $valid = array( 'center', 'right' );
-    if ( in_array( $input, $valid ) ) {
-        return $input;
-    }
-    return 'center';
-}
+function daisy_corp_sanitize_checkbox( $input ) { return ( isset( $input ) && true === $input ) ? true : false; }
 
-function daisy_corp_sanitize_sidebar_position( $input ) {
-    $valid = array( 'left', 'right' );
-    if ( in_array( $input, $valid ) ) {
-        return $input;
-    }
-    return 'right';
-}
-
-function daisy_corp_sanitize_blog_columns( $input ) {
-    $valid = array( '1', '2', '4' );
-    if ( in_array( $input, $valid ) ) {
-        return $input;
-    }
-    return '2';
-}
-
-function daisy_corp_sanitize_daisyui_theme( $input ) {
-    $valid = array(
-        'light', 'dark', 'cupcake', 'bumblebee', 'emerald', 'corporate', 'synthwave', 'retro',
-        'cyberpunk', 'valentine', 'halloween', 'garden', 'forest', 'aqua', 'lofi', 'pastel',
-        'fantasy', 'wireframe', 'black', 'luxury', 'dracula', 'cmyk', 'autumn', 'business',
-        'acid', 'lemonade', 'night', 'coffee', 'winter', 'dim', 'nord', 'sunset'
-    );
-    if ( in_array( $input, $valid ) ) {
-        return $input;
-    }
-    return 'light';
-}
-
-function daisy_corp_sanitize_checkbox( $input ) {
-    return ( isset( $input ) && true === $input ) ? true : false;
-}
-
-function daisy_corp_sanitize_web_font( $input ) {
-    $valid = array( 'sans-serif', 'inter', 'noto-sans', 'noto-serif', 'roboto', 'merriweather', 'oswald' );
-    if ( in_array( $input, $valid ) ) {
-        return $input;
-    }
-    return 'sans-serif';
-}
+add_filter( 'excerpt_length', function( $length ) { return get_theme_mod( 'daisy_corp_excerpt_length', 40 ); }, 999 );
 
 /**
- * Filter excerpt length
- */
-function daisy_corp_custom_excerpt_length( $length ) {
-    return get_theme_mod( 'daisy_corp_excerpt_length', 40 );
-}
-add_filter( 'excerpt_length', 'daisy_corp_custom_excerpt_length', 999 );
-
-/**
- * Generate Table of Contents from h2 and h3 tags
+ * Generate TOC with robust regex and ID injection
  */
 function daisy_corp_get_toc( $content ) {
-    // Regex to match h2 and h3
     $pattern = '/<h([2-3])(.*?)>(.*?)<\/h\1>/i';
+    if ( ! preg_match_all( $pattern, $content, $matches, PREG_SET_ORDER ) ) return array( 'toc' => '', 'content' => $content );
 
-    if ( ! preg_match_all( $pattern, $content, $matches, PREG_SET_ORDER ) ) {
-        return array( 'toc' => '', 'content' => $content );
-    }
-
-    $toc_title = get_theme_mod( 'daisy_corp_toc_title', __( 'Table of Contents', 'daisy-corp' ) );
     $toc = '<div class="daisy-corp-toc mb-0 bg-base-200 p-6 rounded-t-2xl border-t border-x border-base-300 animate-subtle-fade">';
-    $toc .= '<h6 class="text-sm font-bold mb-4 opacity-70 uppercase tracking-wider flex items-center gap-2"><i data-feather="list" class="w-4 h-4"></i> ' . esc_html( $toc_title ) . '</h6>';
-    $toc .= '<ul class="menu menu-sm p-0 opacity-80">';
+    $toc .= '<h6 class="text-sm font-bold mb-4 opacity-70 uppercase tracking-wider flex items-center gap-2"><i data-feather="list" class="w-4 h-4"></i> ' . esc_html( get_theme_mod( 'daisy_corp_toc_title', 'Table of Contents' ) ) . '</h6><ul class="menu menu-sm p-0 opacity-80">';
 
     $modified_content = $content;
-    $id_counts = array();
-
     foreach ( $matches as $match ) {
-        $level = $match[1];
-        $text = strip_tags( $match[3] );
-
-        // Create a unique ID
-        $id = sanitize_title( $text );
-        if ( isset( $id_counts[$id] ) ) {
-            $id_counts[$id]++;
-            $id .= '-' . $id_counts[$id];
-        } else {
-            $id_counts[$id] = 1;
-        }
-
-        // Add ID to heading in content
-        $replacement = "<h$level id=\"$id\"" . $match[2] . ">" . $match[3] . "</h$level>";
-        $modified_content = str_replace( $match[0], $replacement, $modified_content );
-
-        // Add to TOC
-        $margin = ( $level == '3' ) ? 'ml-4' : '';
-        $toc .= "<li class=\"$margin\"><a href=\"#$id\">$text</a></li>";
+        $id = sanitize_title( strip_tags( $match[3] ) );
+        $modified_content = str_replace( $match[0], "<h{$match[1]} id=\"$id\"{$match[2]}>{$match[3]}</h{$match[1]}>", $modified_content );
+        $toc .= '<li class="' . ($match[1] == '3' ? 'ml-4' : '') . '"><a href="#' . $id . '">' . strip_tags( $match[3] ) . '</a></li>';
     }
-
-    $toc .= '</ul></div>';
-
-    return array( 'toc' => $toc, 'content' => $modified_content );
+    return array( 'toc' => $toc . '</ul></div>', 'content' => $modified_content );
 }
 
-/**
- * Calculate reading time based on character count (optimized for Japanese)
- */
 function daisy_corp_get_reading_time() {
-    $content = get_post_field( 'post_content', get_the_ID() );
-    $text = strip_tags( $content );
-
-    // Count characters (multibyte safe)
-    $char_count = mb_strlen( preg_replace( '/\s+/', '', $text ) );
-
-    // Average reading speed for Japanese (500 chars/min)
-    $speed = 500;
-    $time = ceil( $char_count / $speed );
-
-    if ( $time < 1 ) $time = 1;
-
-    return sprintf( esc_html__( '%d min read', 'daisy-corp' ), $time );
+    $char_count = mb_strlen( preg_replace( '/\s+/', '', strip_tags( get_post_field( 'post_content', get_the_ID() ) ) ) );
+    return sprintf( esc_html__( '%d min read', 'daisy-corp' ), max( 1, ceil( $char_count / 500 ) ) );
 }
 
-/**
- * Generate Breadcrumbs with DaisyUI classes
- */
 function daisy_corp_get_breadcrumbs() {
     if ( is_front_page() ) return '';
-
-    $breadcrumbs = '<div class="text-xs breadcrumbs mb-6 opacity-60">';
-    $breadcrumbs .= '<ul>';
-    $breadcrumbs .= '<li><a href="' . esc_url( home_url( '/' ) ) . '"><i data-feather="home" class="mr-1"></i> ' . esc_html__( 'Home', 'daisy-corp' ) . '</a></li>';
-
+    $breadcrumbs = '<div class="text-xs breadcrumbs mb-6 opacity-60"><ul><li><a href="' . esc_url( home_url( '/' ) ) . '"><i data-feather="home" class="mr-1"></i> Home</a></li>';
     if ( is_single() ) {
-        $categories = get_the_category();
-        if ( ! empty( $categories ) ) {
-            $cat = $categories[0];
-            $breadcrumbs .= '<li><a href="' . esc_url( get_category_link( $cat->term_id ) ) . '">' . esc_html( $cat->name ) . '</a></li>';
-        }
+        if ( $cats = get_the_category() ) $breadcrumbs .= '<li><a href="' . esc_url( get_category_link( $cats[0]->term_id ) ) . '">' . esc_html( $cats[0]->name ) . '</a></li>';
         $breadcrumbs .= '<li>' . get_the_title() . '</li>';
-    } elseif ( is_page() ) {
-        $breadcrumbs .= '<li>' . get_the_title() . '</li>';
-    } elseif ( is_archive() ) {
-        $breadcrumbs .= '<li>' . get_the_archive_title() . '</li>';
-    }
-
-    $breadcrumbs .= '</ul>';
-    $breadcrumbs .= '</div>';
-
-    return $breadcrumbs;
+    } else { $breadcrumbs .= '<li>' . get_the_title() . '</li>'; }
+    return $breadcrumbs . '</ul></div>';
 }
 
-/**
- * Filter pagination links to add DaisyUI classes and ensure horizontal layout
- */
 function daisy_corp_pagination() {
-    $links = paginate_links( array(
-        'type'      => 'array',
-        'prev_text' => '&laquo;',
-        'next_text' => '&raquo;',
-    ) );
-
-    if ( is_array( $links ) ) {
+    if ( $links = paginate_links( array( 'type' => 'array', 'prev_text' => '&laquo;', 'next_text' => '&raquo;' ) ) ) {
         echo '<div class="join flex justify-center mt-12">';
-        foreach ( $links as $link ) {
-            if ( strpos( $link, 'current' ) !== false ) {
-                echo str_replace( 'page-numbers current', 'join-item btn btn-active', $link );
-            } else {
-                echo str_replace( 'page-numbers', 'join-item btn', $link );
-            }
-        }
+        foreach ( $links as $link ) echo str_replace( array('page-numbers current', 'page-numbers'), array('join-item btn btn-active', 'join-item btn'), $link );
         echo '</div>';
     }
 }
